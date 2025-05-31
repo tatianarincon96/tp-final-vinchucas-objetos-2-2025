@@ -20,4 +20,4 @@ public class Foto {
         return contenido;
     }
 
-}
+}	
