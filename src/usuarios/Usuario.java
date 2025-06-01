@@ -4,6 +4,7 @@ import especieVinchuca.EspecieVinchuca;
 import foto.Foto;
 import muestra.Muestra;
 import opiniones.Opinion;
+import ubicacion.Ubicacion;
 
 import java.util.List;
 import java.util.UUID;

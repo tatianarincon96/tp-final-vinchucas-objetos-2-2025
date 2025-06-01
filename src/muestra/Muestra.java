@@ -1,20 +1,18 @@
 package muestra;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import especieVinchuca.EspecieVinchuca;
 import foto.Foto;
+import ubicacion.Ubicacion;
 
-public class Muestra {
+public class Muestra extends Observable {
     private UUID id;
 //    private EspecieVinchuca tipoInsecto;
     private LocalDateTime fechaDeCreacion;
     private boolean estadoVerificacion;
-//    private Ubicacion ubicacion;
+    private Ubicacion ubicacion;
     private List<Foto> fotosAdjuntadas;
     private UUID idDelUsuarioAutor;
     private Map<UUID, Opinion> opiniones;
@@ -31,6 +29,11 @@ public class Muestra {
         this.opiniones = new HashMap<>();
         this.filtroDeVoto = new DefaultVotoUsuario();
     }
+
+    public Ubicacion getUbicacion() {
+        return ubicacion;
+    }
+
 
     public void agregarOpinionDe(Usuario usuario, Opinion opinion) {
     	if (this.estadoVerificacion.puedeOpinar(usuario)){
