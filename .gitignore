@@ -1,2 +1,4 @@
-# Idea Folder
-.idea
+/.classpath
+/.project
+/.idea/
+/bin/
