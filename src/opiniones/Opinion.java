@@ -1,4 +1,6 @@
-package users;
+package opiniones;
+
+import usuarios.Nivel;
 
 import java.time.LocalDateTime;
 

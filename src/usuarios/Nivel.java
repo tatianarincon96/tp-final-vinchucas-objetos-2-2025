@@ -1,4 +1,4 @@
-package users;
+package usuarios;
 
 public enum Nivel {
     BASICO,

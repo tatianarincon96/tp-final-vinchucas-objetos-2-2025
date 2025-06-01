@@ -1,4 +1,9 @@
-package users;
+package usuarios;
+
+import especieVinchuca.EspecieVinchuca;
+import foto.Foto;
+import muestra.Muestra;
+import opiniones.Opinion;
 
 import java.util.List;
 import java.util.UUID;

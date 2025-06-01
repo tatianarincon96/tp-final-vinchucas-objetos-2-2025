@@ -1,4 +1,6 @@
-package users;
+package opiniones;
+
+import especieVinchuca.EspecieVinchuca;
 
 public enum TipoDeOpinion {
     VINCHUCA_INFESTANTS(EspecieVinchuca.VINCHUCA_INFESTANS),

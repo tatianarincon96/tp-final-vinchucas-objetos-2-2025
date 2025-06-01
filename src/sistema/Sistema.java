@@ -1,5 +1,6 @@
-import users.Muestra;
-import users.Usuario;
+package sistema;
+
+import usuarios.Usuario;
 
 import java.util.List;
 
