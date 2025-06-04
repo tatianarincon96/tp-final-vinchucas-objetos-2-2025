@@ -27,6 +27,8 @@ public class Muestra {
 		this.usuarioAutor = usuarioAutor;
 		this.setFechaDeCreacion(LocalDateTime.now());
 		this.estado = new CualquierOpinion();
+		this.opinionesBasicas = new HashMap<>();
+		this.opinionesExpertas = new HashMap<>();
 
 	}
 
@@ -41,8 +43,11 @@ public class Muestra {
 	private boolean usuarioYaVoto(Usuario usuario) {
 		return this.opinionesBasicas.containsKey(usuario) || this.opinionesExpertas.containsKey(usuario);
 	}
-	public void agregarOpinion(Usuario usuario, Opinion opinion) throws Exception {
-		if (this.estado.puedeOpinar(usuario) && !this.usuarioYaVoto(usuario)) {
+	private boolean puedeOpinar(Usuario usuario) {
+		return this.estado.puedeOpinar(usuario) && !this.usuarioYaVoto(usuario) && !(this.usuarioAutor == usuario);
+	}
+	public void agregarOpinionDe(Usuario usuario, Opinion opinion) throws Exception {
+		if (this.puedeOpinar(usuario)) {
 			if (usuario.esExperto()) {
 				this.opinionesExpertas.put(usuario, opinion);
 				this.estado = this.estado.actualizarSiAplica(this);

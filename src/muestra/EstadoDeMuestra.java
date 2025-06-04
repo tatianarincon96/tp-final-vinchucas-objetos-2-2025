@@ -23,7 +23,7 @@ public abstract class EstadoDeMuestra {
 
 	public abstract EstadoDeMuestra actualizarSiAplica(Muestra muestra);
 	
-	public TipoDeOpinion obtenerTipoMayorVotado(HashMap<Usuario, Opinion> opinionesAFiltrar) {
+	public TipoDeOpinion obtenerTipoMasVotado(HashMap<Usuario, Opinion> opinionesAFiltrar) {
 		Map<TipoDeOpinion, Integer> opiniones = new HashMap<>();
 
 		for (Opinion opinion : opinionesAFiltrar.values()) {

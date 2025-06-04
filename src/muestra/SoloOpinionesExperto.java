@@ -13,7 +13,7 @@ public class SoloOpinionesExperto extends EstadoDeMuestra{
 
 	@Override
 	public TipoDeOpinion resultadoActual(Muestra muestra) {
-		return this.obtenerTipoMayorVotado(muestra.getOpinionesExpertas());
+		return this.obtenerTipoMasVotado(muestra.getOpinionesExpertas());
 	}
 
 	@Override
