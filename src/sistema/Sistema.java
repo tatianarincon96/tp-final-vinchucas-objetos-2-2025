@@ -1,26 +1,69 @@
 package sistema;
 
+import muestra.Muestra;
+import organizacion.Organizacion;
 import usuarios.Usuario;
+import zonaDeCobertura.ZonaDeCobertura;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Sistema {
-    private List<Usuario> usuarios;
+
+    //------- Atributos del Sistema -------
+
     private List<Muestra> muestras;
     private List<ZonaDeCobertura> zonasDeCobertura;
-    private List<Organizacion> organizaciones;
 
-    public void agregarNuevoUsuario(Usuario usuario) {
-        usuarios.add(usuario);
+    //------- Constructores de la clase Sistema -------
+
+    /**
+     * Constructor de la clase Sistema.
+     * Inicializa las listas de muestras y zonas de cobertura.
+     */
+    public Sistema() {
+        this.muestras = new ArrayList<>();
+        this.zonasDeCobertura = new ArrayList<>();
     }
+
+    //------- Métodos de clase -------
+
+    /**
+     * Agrega una nueva muestra al sistema en la zona de cobertura correspondiente
+     * @param muestra Muestra nueva que se va a agregar al sistema.
+     */
     public void agregarNuevaMuestra(Muestra muestra) {
         muestras.add(muestra);
+        agregarNuevaMuestraALasZonasDeCobertura(muestra);
     }
-    public void agregarNuevaOrganizacion(Organizacion organizacion) {
-        organizaciones.add(organizacion);
+
+    /**
+     * Agrega una nueva muestra al sistema en cada una de las zonas de cobertura que corresponda
+     * @param muestra Muestra nueva que se va a agregar a cada una de las zonas de cobertura que corresponda.
+     */
+    private void agregarNuevaMuestraALasZonasDeCobertura(Muestra muestra) {
+        // Chequear en que zona deberia agregar la muestra segun distancia al epicentro
+        // y agregarla a la lista de muestras de esa zona
+        for (ZonaDeCobertura zona : zonasDeCobertura) {
+            if (muestra.getUbicacion().enZona(zona)) {
+                zona.agregarNuevaMuestra(muestra);
+            }
+        }
     }
-    private void agregarNuevaMuestraALasZonasDeCobertura() {}
-    public void actualizarNivelDeTodosLosUsuarios() {}
-    public List<Muestra> filtrarLasMuestrasPor(List<Filtro> filtros) {}
+
+    /**
+     * Actualiza el nivel de todos los usuarios del sistema que hayan creado muestras
+     */
+    public void actualizarNivelDeTodosLosUsuarios() {
+        for (Muestra muestra : muestras) {
+            Usuario usuario = muestra.getUsuarioAutor();
+            if (usuario != null) {
+                usuario.updateNivel();
+            }
+        }
+    }
+
+    public List<Muestra> filtrarLasMuestrasPor(List<Filtro> filtros) {
+    }
 
 }
