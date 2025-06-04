@@ -35,10 +35,6 @@ public class Opinion {
     public LocalDateTime getFechaOpinada() {
         return fechaOpinada;
     }
-    
-    public Usuario getUsuario() {
-    	return this.usuario;
-    }
 
     public Nivel getNivelDeOpinion() {
         return nivelDeOpinion;
