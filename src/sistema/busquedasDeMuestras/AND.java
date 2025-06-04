@@ -12,7 +12,7 @@ public class AND implements Consultable{
     // Atributos de la clase AND
 
     /**
-     * Primer consulta a combinar en la operación AND.
+     * Primera consulta a combinar en la operación AND.
      */
     private Consultable primeraConsulta;
 
@@ -23,13 +23,11 @@ public class AND implements Consultable{
 
 
 
-
-
     // Constructores de la clase AND
 
     /**
      * Constructor de la clase AND.
-     * @param primeraConsulta Primer consulta a combinar.
+     * @param primeraConsulta Primera consulta a combinar.
      * @param segundaConsulta Segunda consulta a combinar.
      */
     public AND(Consultable primeraConsulta, Consultable segundaConsulta) {

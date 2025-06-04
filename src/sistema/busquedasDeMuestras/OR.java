@@ -27,8 +27,8 @@ public class OR implements Consultable {
 
     /**
      * Constructor de la clase OR.
-     * @param primeraConsulta Primer filtro a combinar.
-     * @param segundaConsulta Segundo filtro a combinar.
+     * @param primeraConsulta Primera consulta a combinar.
+     * @param segundaConsulta Segunda consulta a combinar.
      */
     public OR(Consultable primeraConsulta, Consultable segundaConsulta) {
         this.primeraConsulta = primeraConsulta;

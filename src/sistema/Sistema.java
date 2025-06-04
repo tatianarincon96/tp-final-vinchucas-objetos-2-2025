@@ -63,6 +63,11 @@ public class Sistema {
         }
     }
 
+    /**
+     * Filtra las muestras del sistema según el criterio de búsqueda proporcionado.
+     * @param consulta Criterio de búsqueda que implementa la interfaz Consultable.
+     * @return Lista de muestras filtradas según el criterio de búsqueda.
+     */
     public List<Muestra> filtrarLasMuestrasPor(Consultable consulta) {
         return consulta.filtrarLasMuestras(this.muestras);
     }
