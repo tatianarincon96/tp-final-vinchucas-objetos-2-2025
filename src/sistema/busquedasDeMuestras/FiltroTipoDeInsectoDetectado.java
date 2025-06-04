@@ -1,12 +1,11 @@
-package sistema;
+package sistema.busquedasDeMuestras;
 
 import muestra.Muestra;
-import sistema.Filtro;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class FiltroTipoDeInsectoDetectado implements Filtro {
+public class FiltroTipoDeInsectoDetectado implements Consultable {
 
     //------- Atributos del FiltroTipoDeInsectoDetectado -------
 
@@ -22,8 +21,7 @@ public class FiltroTipoDeInsectoDetectado implements Filtro {
      * Metodo que filtra las muestras según el criterio de tipo de insecto detectado.
      * @param muestras Lista de muestras a filtrar.
      */
-    @Override
     public List<Muestra> filtrarLasMuestras(List<Muestra> muestras) {
-
+        return muestras;// todo
     }
 }

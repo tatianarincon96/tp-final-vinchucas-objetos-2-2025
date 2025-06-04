@@ -1,11 +1,11 @@
-package sistema;
+package sistema.busquedasDeMuestras;
 
 import muestra.Muestra;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class FiltroNivelDeVerificacion implements Filtro {
+public class FiltroNivelDeVerificacion implements Consultable {
 
     //------- Constructores de la clase FiltroNivelDeVerificacion -------
 
@@ -19,6 +19,9 @@ public class FiltroNivelDeVerificacion implements Filtro {
      * Metodo que filtra las muestras según el criterio de nivel de verificación
      * @param muestras Lista de muestras a filtrar.
      */
-    @Override
-    public List<Muestra> filtrarLasMuestras(List<Muestra> muestras) {}
+    public List<Muestra> filtrarLasMuestras(List<Muestra> muestras) {
+        return muestras; // todo
+    };
+
+
 }

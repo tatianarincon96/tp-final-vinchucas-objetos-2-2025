@@ -1,7 +1,7 @@
 package sistema;
 
 import muestra.Muestra;
-import organizacion.Organizacion;
+import sistema.busquedasDeMuestras.Consultable;
 import usuarios.Usuario;
 import zonaDeCobertura.ZonaDeCobertura;
 
@@ -63,7 +63,8 @@ public class Sistema {
         }
     }
 
-    public List<Muestra> filtrarLasMuestrasPor(List<Filtro> filtros) {
+    public List<Muestra> filtrarLasMuestrasPor(Consultable consulta) {
+        return consulta.filtrarLasMuestras(this.muestras);
     }
 
 }

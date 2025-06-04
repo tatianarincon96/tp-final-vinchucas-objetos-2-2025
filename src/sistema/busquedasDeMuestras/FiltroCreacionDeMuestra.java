@@ -1,11 +1,11 @@
-package sistema;
+package sistema.busquedasDeMuestras;
 
 import muestra.Muestra;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class FiltroCreacionDeMuestra implements Filtro {
+public class FiltroCreacionDeMuestra implements Consultable {
 
     //------- Atributos del FiltroCreacionDeMuestra -------
 
@@ -29,7 +29,6 @@ public class FiltroCreacionDeMuestra implements Filtro {
      * Metodo que filtra las muestras según el criterio de creación.
      * @param muestras Lista de muestras a filtrar.
      */
-    @Override
     public List<Muestra> filtrarLasMuestras(List<Muestra> muestras) {
         return muestras.stream().filter(m -> m.getFechaDeCreacion().isAfter(desde) && m.getFechaDeCreacion().isBefore(hasta)).toList();
     }
