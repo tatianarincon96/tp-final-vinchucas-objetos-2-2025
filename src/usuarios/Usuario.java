@@ -112,4 +112,8 @@ public class Usuario {
     public Nivel getNivel() {
         return nivelDeUsuario;
     }
+
+	public boolean esExperto() {
+		return this.nivelDeUsuario.esExperto();
+	}
 }
