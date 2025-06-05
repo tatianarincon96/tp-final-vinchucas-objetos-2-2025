@@ -1,7 +1,7 @@
 package sistema;
 
 import muestra.Muestra;
-import organizacion.Organizacion;
+import sistema.busquedasDeMuestras.Consultable;
 import usuarios.Usuario;
 import zonaDeCobertura.ZonaDeCobertura;
 
@@ -63,7 +63,13 @@ public class Sistema {
         }
     }
 
-    public List<Muestra> filtrarLasMuestrasPor(List<Filtro> filtros) {
+    /**
+     * Filtra las muestras del sistema según el criterio de búsqueda proporcionado.
+     * @param consulta Criterio de búsqueda que implementa la interfaz Consultable.
+     * @return Lista de muestras filtradas según el criterio de búsqueda.
+     */
+    public List<Muestra> filtrarLasMuestrasPor(Consultable consulta) {
+        return consulta.filtrarLasMuestras(this.muestras);
     }
 
 }

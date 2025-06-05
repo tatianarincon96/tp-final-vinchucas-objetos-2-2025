@@ -101,7 +101,9 @@ public class Ubicacion {
      * @return lista de ubicaciones que están dentro del radio especificado.
      */
     public List<Ubicacion> getUbicacionesEnUnRadio(List<Ubicacion> ubicaciones, double radio) {
-        return ubicaciones.stream().filter(ubicacion -> ubicacion.calcularDistanciaHasta(this) <= radio).toList();
+        return ubicaciones.stream()
+                .filter(ubicacion -> ubicacion.calcularDistanciaHasta(this) <= radio)
+                .toList();
     }
 
 
@@ -114,7 +116,9 @@ public class Ubicacion {
      * @return lista de muestras que están dentro del radio especificado desde la muestra central.
      */
     public List<Muestra> getMuestrasEnUnRadioALaMuestra(List<Muestra> muestrasAFiltrar, double radio, Muestra muestraCentral) {
-        return muestrasAFiltrar.stream().filter(muestra -> muestra.getUbicacion().calcularDistanciaHasta(muestraCentral.getUbicacion()) <= radio).toList() ;
+        return muestrasAFiltrar.stream()
+                .filter(muestra -> muestra.getUbicacion().calcularDistanciaHasta(muestraCentral.getUbicacion()) <= radio)
+                .toList() ;
     }
 
 

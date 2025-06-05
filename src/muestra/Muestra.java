@@ -1,5 +1,6 @@
 package muestra;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -10,7 +11,7 @@ import opiniones.TipoDeOpinion;
 import ubicacion.Ubicacion;
 import usuarios.Usuario;
 
-public class Muestra {
+public class Muestra extends Observable {
 //    private UUID id;
 	private LocalDateTime fechaDeCreacion;
 	private Ubicacion ubicacion;
@@ -35,6 +36,17 @@ public class Muestra {
 	public Ubicacion getUbicacion() {
 		return ubicacion;
 	}
+
+	public LocalDateTime getFechaUltimaVotacion() {
+		// TODO: Implementar para el filtroUltimaVotacion
+		return null;
+	}
+
+	public EspecieVinchuca getTipoInsecto() {
+		// TODO: Implementar para el filtroTipoDeInsectoDetectado
+		return null;
+	}
+
 
 	public boolean tieneOpinionesDeExperto() {
 		return this.opinionesExpertas.size() > 0;
@@ -104,4 +116,9 @@ public class Muestra {
 		return historial;
 
 	}
+
+	public void notificarObservadoresSobreVerificacion() {
+		// TODO: Implementar para notificar a los observadores (ZonaDeCobertura) cuando la muestra se verifique
+	}
+
 }
