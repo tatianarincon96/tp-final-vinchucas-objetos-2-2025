@@ -8,6 +8,7 @@ import foto.Foto;
 import opiniones.Opinion;
 import opiniones.TipoDeOpinion;
 import ubicacion.Ubicacion;
+import usuarios.Nivel;
 import usuarios.Usuario;
 
 public class Muestra extends Observable {
@@ -16,68 +17,70 @@ public class Muestra extends Observable {
 	private List<Foto> fotosAdjuntadas;
 	private Usuario usuarioAutor;
 	private EstadoDeMuestra estado;
-	private HashMap<Usuario, Opinion> opinionesExpertas;
-	private HashMap<Usuario, Opinion> opinionesBasicas;
+	private HashMap<Nivel, HashMap<Usuario, Opinion>> opiniones;
 	private LocalDateTime fechaUltimaVotacion;
-
-	public Muestra(EspecieVinchuca tipoInsecto, Ubicacion ubicacion, List<Foto> fotosAdjuntadas, Usuario usuarioAutor) throws Exception {
+	private EspecieVinchuca tipoInsecto;
+	
+	public Muestra(EspecieVinchuca tipoInsecto, Ubicacion ubicacion, List<Foto> fotosAdjuntadas, Usuario usuarioAutor)
+			throws Exception {
 		this.ubicacion = ubicacion;
 		this.setFotosAdjuntadas(fotosAdjuntadas != null ? fotosAdjuntadas : new ArrayList<>());
 		this.usuarioAutor = usuarioAutor;
 		this.estado = new CualquierOpinion();
-		this.opinionesBasicas = new HashMap<>();
-		this.opinionesExpertas = new HashMap<>();
+		this.opiniones = new HashMap<>();
+		for (Nivel nivel : Nivel.values()) {
+			opiniones.put(nivel, new HashMap<>());
+		}
 		this.fechaUltimaVotacion = LocalDateTime.now();
 		this.fechaDeCreacion = LocalDateTime.now();
-		
+		this.tipoInsecto = tipoInsecto;
+
 		TipoDeOpinion tipo = TipoDeOpinion.desdeEspecie(tipoInsecto);
 		this.agregarOpinionDe(usuarioAutor, new Opinion(usuarioAutor.getNivel(), tipo));
 	}
 
+	
 	public Ubicacion getUbicacion() {
 		return ubicacion;
 	}
+
 	public Usuario getUsuario() {
 		return this.usuarioAutor;
 	}
-	
+
 	public LocalDateTime getFechaUltimaVotacion() {
 		return this.fechaUltimaVotacion;
 	}
 
 	public EspecieVinchuca getTipoInsecto() {
-		if (this.estado.estaVerificada()) {
-			return this.resultadoActual().getEspecieVinchuca();
-		}
-		return null;
+		return this.tipoInsecto;
 	}
 
 	public boolean tieneOpinionesDeExperto() {
-		return this.opinionesExpertas.size() > 0;
+		return this.opiniones.get(Nivel.EXPERTO).size() > 0;
 	}
 
 	private boolean usuarioYaVoto(Usuario usuario) {
-		return this.opinionesBasicas.containsKey(usuario) || this.opinionesExpertas.containsKey(usuario);
+		return this.opiniones.values().stream().anyMatch(m -> m.containsKey(usuario));
 	}
 
-	private boolean puedeOpinar(Usuario usuario) {
-		return this.estado.puedeOpinar(usuario) && !this.usuarioYaVoto(usuario) && !(this.usuarioAutor == usuario);
+	 boolean puedeOpinar(Usuario usuario) {
+		return this.estado.puedeOpinar(usuario) && !this.usuarioYaVoto(usuario);
 	}
 
 	public void agregarOpinionDe(Usuario usuario, Opinion opinion) throws Exception {
 		if (this.puedeOpinar(usuario)) {
-			if (usuario.esExperto()) {
-				this.opinionesExpertas.put(usuario, opinion);
-				this.estado = this.estado.actualizarSiAplica(this);
-			} else {
-				this.opinionesBasicas.put(usuario, opinion);
-			}
+			this.opiniones.get(usuario.getNivel()).put(usuario, opinion);
+			this.estado = this.estado.actualizarSiAplica(this);
 		} else {
 			throw new Exception("El usuario no puede opinar sobre esta muestra");
 		}
 
 	}
-
+	
+	public EstadoDeMuestra getEstado() {
+		return this.estado;
+	}
 	public boolean estaVerificada() {
 		return this.estado.estaVerificada();
 	}
@@ -95,11 +98,11 @@ public class Muestra extends Observable {
 	}
 
 	public HashMap<Usuario, Opinion> getOpinionesExpertas() {
-		return this.opinionesExpertas;
+		return this.opiniones.get(Nivel.EXPERTO);
 	}
 
 	public HashMap<Usuario, Opinion> getOpinionesBasicas() {
-		return this.opinionesBasicas;
+		return this.opiniones.get(Nivel.BASICO);
 	}
 
 	public List<Foto> getFotosAdjuntadas() {
@@ -111,16 +114,16 @@ public class Muestra extends Observable {
 	}
 
 	public int cantidadDeExpertosQueOpinan(TipoDeOpinion resultadoActual) {
-		return (int) this.opinionesExpertas.values().stream()
+		return (int) this.opiniones.get(Nivel.EXPERTO).values().stream()
 				.filter(op -> op.getTipoDeOpinion().equals(resultadoActual)).count();
 	}
 
-	public HashMap<Usuario, Opinion> historialDeOpiniones() {
-		HashMap<Usuario, Opinion> historial = new HashMap<>();
-		historial.putAll(opinionesBasicas);
-		historial.putAll(opinionesExpertas);
+	public Map<Usuario, Opinion> historialDeOpiniones() {
+		Map<Usuario, Opinion> historial = new HashMap<>();
+		for (Map<Usuario, Opinion> subMap : opiniones.values()) {
+			historial.putAll(subMap);
+		}
 		return historial;
-
 	}
 
 	public void notificarObservadoresSobreVerificacion() {

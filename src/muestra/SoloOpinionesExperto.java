@@ -10,7 +10,6 @@ public class SoloOpinionesExperto extends EstadoDeMuestra{
 	public boolean puedeOpinar(Usuario usuario) {
 		return usuario.esExperto();
 	}
-
 	@Override
 	public TipoDeOpinion resultadoActual(Muestra muestra) {
 		return this.obtenerTipoMasVotado(muestra.getOpinionesExpertas());
