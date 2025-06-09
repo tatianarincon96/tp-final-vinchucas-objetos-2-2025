@@ -22,10 +22,9 @@ public class MuestraTest {
 	@BeforeEach
 	public void setUp() {
 		Ubicacion ubicacion = mock(Ubicacion.class);
-		EspecieVinchuca especie = mock(EspecieVinchuca.class);
 		Usuario usuario = mock(Usuario.class);
 		
-		this.muestra = new Muestra(especie, ubicacion, new ArrayList<>(), usuario);
+		this.muestra = new Muestra(EspecieVinchuca.VINCHUCA_GUASAYANA, ubicacion, new ArrayList<>(), usuario);
 	}
 	@Test 
 	public void usuarioPuedeOpinarSobreMuestraEnEstadoBasico(){
@@ -50,8 +49,7 @@ public class MuestraTest {
 	    Usuario creador = mock(Usuario.class);
 
 	    Ubicacion ubicacion = mock(Ubicacion.class);
-	    EspecieVinchuca especie = mock(EspecieVinchuca.class);
-	    Muestra muestraDelUsuario = new Muestra(especie, ubicacion, new ArrayList<>(), creador);
+	    Muestra muestraDelUsuario = new Muestra(EspecieVinchuca.VINCHUCA_SORDIDA, ubicacion, new ArrayList<>(), creador);
 
 	    Opinion opinion = mock(Opinion.class);
 

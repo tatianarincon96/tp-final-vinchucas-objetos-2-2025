@@ -65,25 +65,22 @@ public class Usuario {
      * @param fotos Lista de fotos asociadas a la muestra.
      */
     public void registrarMuestra(EspecieVinchuca especie, Ubicacion ubicacion, List<Foto> fotos) {
+        this.updateNivel();
         Muestra nuevaMuestra = new Muestra(especie, ubicacion, fotos, this);
         this.muestrasCreadas.add(nuevaMuestra);
         sistema.agregarNuevaMuestra(nuevaMuestra);
-        this.updateNivel();
     }
 
     /**
      * Registra una nueva opinión sobre una muestra.
+     *
      * @param muestra Muestra sobre la cual se emite la opinión.
      * @param opinion Opinión emitida por el usuario.
      */
-    public void opinar(Muestra muestra, Opinion opinion) {
-        if (!muestrasCreadas.contains(muestra)) {
-            muestra.agregarOpinionDe(this, opinion);
-            this.opinionesHechas.add(opinion);
-            this.updateNivel();
-        } else {
-            throw new IllegalArgumentException("No se puede opinar sobre una muestra que ha sido creada por el usuario.");
-        }
+    public void opinar(Muestra muestra, Opinion opinion) throws Exception {
+        this.updateNivel();
+        muestra.agregarOpinionDe(this, opinion);
+        this.opinionesHechas.add(opinion);
     }
 
     /**
@@ -113,6 +110,26 @@ public class Usuario {
         return nivelDeUsuario;
     }
 
+    /**
+     * Getter que retorna la lista de muestras creadas por el usuario.
+     * @return Lista de muestra creadas por el usuario.
+     */
+    public List<Muestra> getMuestrasCreadas() {
+        return muestrasCreadas;
+    }
+
+    /**
+     * Getter que retorna la lista de opiniones hechas por el usuario.
+     * @return Lista de opiniones hechas por el usuario.
+     */
+    public List<Opinion> getOpinionesHechas() {
+        return opinionesHechas;
+    }
+
+    /**
+     * Getter que retorna si un usuario es experto o no
+     * @return Booleano que indica si el usuario es experto (true) o no (false).
+     */
 	public boolean esExperto() {
 		return this.nivelDeUsuario.esExperto();
 	}

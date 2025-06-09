@@ -21,8 +21,9 @@ public class Opinion {
      * @param tipoDeOpinion tipo de la opinion, no puede ser nulo.
      */
     public Opinion(Nivel nivelDeOpinion, TipoDeOpinion tipoDeOpinion) {
-        this.nivelDeOpinion = nivelDeOpinion;
         this.tipoDeOpinion = tipoDeOpinion;
+        this.fechaOpinada = LocalDateTime.now();
+        this.nivelDeOpinion = nivelDeOpinion;
     }
 
     /**

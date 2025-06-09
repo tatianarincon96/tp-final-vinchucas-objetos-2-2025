@@ -47,6 +47,11 @@ public class Muestra extends Observable {
 		return null;
 	}
 
+	public Usuario getUsuarioAutor() {
+		// TODO: Implementar para el Sistema
+		return null;
+	}
+
 
 	public boolean tieneOpinionesDeExperto() {
 		return this.opinionesExpertas.size() > 0;
