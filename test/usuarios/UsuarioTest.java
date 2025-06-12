@@ -27,7 +27,7 @@ class UsuarioTest {
     }
 
     @Test
-    void registrarMuestra_agregaMuestraYActualizaSistema() {
+    void registrarMuestra_agregaMuestraYActualizaSistema() throws Exception {
         Ubicacion ubicacion = mock(Ubicacion.class);
         Foto foto = mock(Foto.class);
 

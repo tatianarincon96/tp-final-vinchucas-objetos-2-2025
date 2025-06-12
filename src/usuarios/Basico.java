@@ -1,25 +1,23 @@
 package usuarios;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
-public class Basico implements NivelState {
+public class Basico extends NivelState {
+    private Nivel nivel;
 
-    @Override
-    public void updateNivel(Usuario usuario) {
-        LocalDateTime ultimos30Dias = LocalDateTime.now().minusDays(30);
-        int cantidadDeMuestrasCargadas = usuario.getMuestrasCreadas().stream()
-                .filter(m -> m.getFechaDeCreacion().isAfter(ultimos30Dias))
-                .toList().size();
-        int cantidadDeOpinionesHechas = usuario.getOpinionesHechas().stream()
-                .filter(o -> o.getFechaOpinada().isAfter(ultimos30Dias))
-                .toList().size();
-        if (cantidadDeMuestrasCargadas > 10 && cantidadDeOpinionesHechas > 20) {
-            usuario.setNivelDeUsuario(new Experto());
-        }
+    public Basico() {
+        this.nivel = Nivel.BASICO;
+    }
+
+    public Nivel getNivel() {
+        return nivel;
     }
 
     @Override
-    public boolean esExperto() {
-        return false;
+    public void updateNivel(Usuario usuario) {
+        List<Integer> cantidadMuestrasYOpiniones = obtainMuestrasYOpiniones(usuario);
+        if (cantidadMuestrasYOpiniones.get(0) > 10 && cantidadMuestrasYOpiniones.get(1) > 20) {
+            usuario.setNivelDeUsuario(new Experto());
+        }
     }
 }

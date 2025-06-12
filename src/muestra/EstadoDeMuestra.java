@@ -10,7 +10,7 @@ import opiniones.TipoDeOpinion;
 import usuarios.Usuario;
 
 public abstract class EstadoDeMuestra {
-	
+
 	public boolean puedeOpinar(Usuario usuario) {
 		return true;
 	}
@@ -22,7 +22,7 @@ public abstract class EstadoDeMuestra {
 	public abstract TipoDeOpinion resultadoActual(Muestra muestra);
 
 	public abstract EstadoDeMuestra actualizarSiAplica(Muestra muestra);
-	
+
 	public TipoDeOpinion obtenerTipoMasVotado(HashMap<Usuario, Opinion> opinionesAFiltrar) {
 		Map<TipoDeOpinion, Integer> opiniones = new HashMap<>();
 

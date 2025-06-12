@@ -39,4 +39,13 @@ public enum TipoDeOpinion {
     public EspecieVinchuca getEspecieVinchuca() {
         return especieVinchuca;
     }
+
+	public static TipoDeOpinion desdeEspecie(EspecieVinchuca tipoInsecto) {
+		for (TipoDeOpinion tipo : TipoDeOpinion.values()) {
+            if (tipo.getEspecieVinchuca() != null && tipo.getEspecieVinchuca().equals(tipoInsecto)) {
+                return tipo;
+            }
+        }
+        return NINGUNA;
+	}
 }

@@ -7,8 +7,8 @@ public class MuestraVerificada extends EstadoDeMuestra{
 
 	private TipoDeOpinion resultadoFinal;
 	
-	public MuestraVerificada(Muestra muestra) {
-		this.resultadoFinal = this.resultadoActual(muestra);
+	public MuestraVerificada(TipoDeOpinion resultadoActual) {
+		this.resultadoFinal = resultadoActual;
 	}
 	@Override
 	public boolean puedeOpinar(Usuario usuario) {

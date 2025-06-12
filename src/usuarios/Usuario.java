@@ -63,7 +63,7 @@ public class Usuario {
      * @param ubicacion Ubicación geográfica donde se tomó la muestra.
      * @param fotos Lista de fotos asociadas a la muestra.
      */
-    public void registrarMuestra(EspecieVinchuca especie, Ubicacion ubicacion, List<Foto> fotos) {
+    public void registrarMuestra(EspecieVinchuca especie, Ubicacion ubicacion, List<Foto> fotos) throws Exception {
         if (!esExpertoExterno) {
             nivelDeUsuario.updateNivel(this);
         }
