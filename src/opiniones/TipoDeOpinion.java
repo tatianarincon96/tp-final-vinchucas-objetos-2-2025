@@ -39,4 +39,9 @@ public enum TipoDeOpinion {
     public EspecieVinchuca getEspecieVinchuca() {
         return especieVinchuca;
     }
+
+	public static TipoDeOpinion desdeEspecie(EspecieVinchuca tipoInsecto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

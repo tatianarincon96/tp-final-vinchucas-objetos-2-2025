@@ -12,7 +12,7 @@ public class CualquierOpinion extends EstadoDeMuestra {
 			return this;
 		}
 	}
-
+	
 	@Override
 	public TipoDeOpinion resultadoActual(Muestra muestra) {
 		return this.obtenerTipoMasVotado(muestra.getOpinionesBasicas());
