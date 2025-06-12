@@ -1,7 +1,6 @@
 package opiniones;
 
-import usuarios.Nivel;
-import usuarios.Usuario;
+import usuarios.NivelState;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +10,7 @@ public class Opinion {
 
     private TipoDeOpinion tipoDeOpinion;
     private LocalDateTime fechaOpinada;
-    private Nivel nivelDeOpinion;
+    private NivelState nivelDeOpinion;
 
     //------- Constructores de la clase Opinion -------
 
@@ -20,7 +19,7 @@ public class Opinion {
      * @param nivelDeOpinion nivel del usuario que emite la opinion, no puede ser nulo.
      * @param tipoDeOpinion tipo de la opinion, no puede ser nulo.
      */
-    public Opinion(Nivel nivelDeOpinion, TipoDeOpinion tipoDeOpinion) {
+    public Opinion(NivelState nivelDeOpinion, TipoDeOpinion tipoDeOpinion) {
         this.tipoDeOpinion = tipoDeOpinion;
         this.fechaOpinada = LocalDateTime.now();
         this.nivelDeOpinion = nivelDeOpinion;
@@ -37,7 +36,7 @@ public class Opinion {
         return fechaOpinada;
     }
 
-    public Nivel getNivelDeOpinion() {
+    public NivelState getNivelDeOpinion() {
         return nivelDeOpinion;
     }
 }

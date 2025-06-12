@@ -61,9 +61,39 @@ class UsuarioTest {
         for (int i = 0; i < 11; i++) usuarioTest.getMuestrasCreadas().add(muestraMock);
         for (int i = 0; i < 21; i++) usuarioTest.getOpinionesHechas().add(opinionMock);
 
-        usuarioTest.updateNivel();
+        usuarioTest.getNivel().updateNivel(usuarioTest);
 
-        assertEquals(Nivel.EXPERTO, usuarioTest.getNivel());
+        assertEquals(Experto.class, usuarioTest.getNivel().getClass());
+        assertTrue(usuarioTest.getNivel().esExperto());
+    }
+
+    @Test
+    void updateNivel_cambiaANivelExpertoYVolverABasico() {
+        Usuario usuarioTest = new Usuario("Ana");
+        // Mock de muestra con fecha reciente
+        Muestra muestraMock = mock(Muestra.class);
+        when(muestraMock.getFechaDeCreacion()).thenReturn(LocalDateTime.now().minusDays(1));
+        // Mock de opinion con fecha reciente
+        Opinion opinionMock = mock(Opinion.class);
+        when(opinionMock.getFechaOpinada()).thenReturn(LocalDateTime.now().minusDays(1));
+
+        // Agregar 11 muestras y 21 opiniones recientes
+        for (int i = 0; i < 11; i++) usuarioTest.getMuestrasCreadas().add(muestraMock);
+        for (int i = 0; i < 21; i++) usuarioTest.getOpinionesHechas().add(opinionMock);
+
+        usuarioTest.getNivel().updateNivel(usuarioTest);
+
+        assertEquals(Experto.class, usuarioTest.getNivel().getClass());
+        assertTrue(usuarioTest.getNivel().esExperto());
+
+        // Simular que pasan 31 días
+        when(muestraMock.getFechaDeCreacion()).thenReturn(LocalDateTime.now().minusDays(31));
+        when(opinionMock.getFechaOpinada()).thenReturn(LocalDateTime.now().minusDays(31));
+
+        usuarioTest.getNivel().updateNivel(usuarioTest);
+
+        assertEquals(Basico.class, usuarioTest.getNivel().getClass());
+        assertFalse(usuarioTest.getNivel().esExperto());
     }
 
     @Test
@@ -77,26 +107,26 @@ class UsuarioTest {
         usuarioTest.getMuestrasCreadas().add(muestraMock);
         usuarioTest.getOpinionesHechas().add(opinionMock);
 
-        usuarioTest.updateNivel();
+        usuarioTest.getNivel().updateNivel(usuarioTest);
 
-        assertEquals(Nivel.BASICO, usuarioTest.getNivel());
+        assertEquals(Basico.class, usuarioTest.getNivel().getClass());
+        assertFalse(usuarioTest.getNivel().esExperto());
     }
 
     @Test
     void getNivel_devuelveNivelActual() {
-        assertEquals(Nivel.BASICO, usuario.getNivel());
+        assertEquals(Basico.class, usuario.getNivel().getClass());
     }
 
     @Test
-    void esExperto_trueSiNivelExperto() {
-        Usuario usuarioMock = mock(Usuario.class);
-        when(usuarioMock.getNivel()).thenReturn(Nivel.EXPERTO);
-        assertTrue(usuarioMock.getNivel().esExperto());
-    }
-
-    @Test
-    void esExperto_falseSiNivelBasico() {
+    void esExperto_trueSiNivelExpertoExtremo() {
         Usuario usuarioTest = new Usuario("Ana", true);
-        assertFalse(usuarioTest.esExperto());
+        assertTrue(usuarioTest.esExpertoExterno());
+    }
+
+    @Test
+    void esExperto_falseSiNoEsExpertoExtremo() {
+        Usuario usuarioTest = new Usuario("Ana", false);
+        assertFalse(usuarioTest.esExpertoExterno());
     }
 }

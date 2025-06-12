@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import especieVinchuca.EspecieVinchuca;
 import opiniones.Opinion;
 import ubicacion.Ubicacion;
-import usuarios.Nivel;
+import usuarios.Basico;
 import usuarios.Usuario;
 
 public class MuestraTest {
@@ -29,7 +29,7 @@ public class MuestraTest {
 	@Test 
 	public void usuarioPuedeOpinarSobreMuestraEnEstadoBasico(){
 			Usuario usuario = mock(Usuario.class);
-			when(usuario.getNivel()).thenReturn(Nivel.BASICO);
+			when(usuario.getNivel()).thenReturn(new Basico());
 			Opinion opinion = mock(Opinion.class);
 			assertDoesNotThrow(() -> muestra.agregarOpinionDe(usuario, opinion));
 		 	assertEquals(opinion, muestra.historialDeOpiniones().get(usuario));
@@ -38,7 +38,7 @@ public class MuestraTest {
 	@Test
 	public void unUsuarioNoPuedeVotarDosVeces(){
 		Usuario usuario = mock(Usuario.class);
-		when(usuario.getNivel()).thenReturn(Nivel.BASICO);
+		when(usuario.getNivel()).thenReturn(new Basico());
 		Opinion opinion = mock(Opinion.class);
 		assertDoesNotThrow(() -> muestra.agregarOpinionDe(usuario, opinion));
 		assertThrows(Exception.class, () -> muestra.agregarOpinionDe(usuario, opinion));

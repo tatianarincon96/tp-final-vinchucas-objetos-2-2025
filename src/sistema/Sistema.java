@@ -58,7 +58,7 @@ public class Sistema {
         for (Muestra muestra : muestras) {
             Usuario usuario = muestra.getUsuarioAutor();
             if (usuario != null) {
-                usuario.updateNivel();
+                usuario.getNivel().updateNivel(usuario);
             }
         }
     }

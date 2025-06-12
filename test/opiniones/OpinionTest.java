@@ -1,9 +1,10 @@
 package opiniones;
 
+import especieVinchuca.EspecieVinchuca;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import usuarios.Nivel;
+import usuarios.Basico;
+import usuarios.NivelState;
 
 import java.time.LocalDateTime;
 
@@ -22,7 +23,7 @@ class OpinionTest {
 
     @Test
     void constructorOpinion() {
-        Nivel nivel = Nivel.BASICO;
+        NivelState nivel = new Basico();
         TipoDeOpinion tipo = TipoDeOpinion.IMAGEN_POCO_CLARA;
 
         // Crear una instancia real de Opinion
@@ -50,8 +51,21 @@ class OpinionTest {
 
     @Test
     void getNivelDeOpinion() {
-        when(opinionMock.getNivelDeOpinion()).thenReturn(Nivel.BASICO);
-        assertEquals(Nivel.BASICO, opinionMock.getNivelDeOpinion());
+        when(opinionMock.getNivelDeOpinion()).thenReturn(new Basico());
+        assertEquals(Basico.class, opinionMock.getNivelDeOpinion().getClass());
         verify(opinionMock).getNivelDeOpinion();
+    }
+
+    @Test
+    void esRelacionadaConVinchuca() {
+        when(opinionMock.getTipoDeOpinion()).thenReturn(TipoDeOpinion.VINCHUCA_INFESTANTS);
+        assertTrue(opinionMock.getTipoDeOpinion().esRelacionadaConVinchuca());
+        assertEquals(EspecieVinchuca.VINCHUCA_INFESTANS, opinionMock.getTipoDeOpinion().getEspecieVinchuca());
+    }
+
+    @Test
+    void fechaOpinadaNoEsNulo() {
+        Opinion opinion = new Opinion(new Basico(), TipoDeOpinion.VINCHUCA_INFESTANTS);
+        assertNotNull(opinion.getFechaOpinada(), "La fecha de la opinión no debe ser nula");
     }
 }
