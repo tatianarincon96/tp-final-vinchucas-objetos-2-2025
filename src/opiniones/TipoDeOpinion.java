@@ -41,7 +41,11 @@ public enum TipoDeOpinion {
     }
 
 	public static TipoDeOpinion desdeEspecie(EspecieVinchuca tipoInsecto) {
-		// TODO Auto-generated method stub
-		return null;
+		for (TipoDeOpinion tipo : TipoDeOpinion.values()) {
+            if (tipo.getEspecieVinchuca() != null && tipo.getEspecieVinchuca().equals(tipoInsecto)) {
+                return tipo;
+            }
+        }
+        return NINGUNA;
 	}
 }

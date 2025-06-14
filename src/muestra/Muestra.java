@@ -9,6 +9,7 @@ import opiniones.Opinion;
 import opiniones.TipoDeOpinion;
 import ubicacion.Ubicacion;
 import usuarios.Nivel;
+import usuarios.NivelState;
 import usuarios.Usuario;
 
 public class Muestra extends Observable {
@@ -36,7 +37,7 @@ public class Muestra extends Observable {
 		this.tipoInsecto = tipoInsecto;
 
 		TipoDeOpinion tipo = TipoDeOpinion.desdeEspecie(tipoInsecto);
-		this.agregarOpinionDe(usuarioAutor, new Opinion(usuarioAutor.getNivel(), tipo));
+		this.agregarOpinionDe(usuarioAutor, new Opinion(usuarioAutor.getNivel().getNivel(), tipo));
 	}
 
 	
@@ -70,7 +71,7 @@ public class Muestra extends Observable {
 
 	public void agregarOpinionDe(Usuario usuario, Opinion opinion) throws Exception {
 		if (this.puedeOpinar(usuario)) {
-			this.opiniones.get(usuario.getNivel()).put(usuario, opinion);
+			this.opiniones.get(usuario.getNivel().getNivel()).put(usuario, opinion);
 			this.estado = this.estado.actualizarSiAplica(this);
 		} else {
 			throw new Exception("El usuario no puede opinar sobre esta muestra");

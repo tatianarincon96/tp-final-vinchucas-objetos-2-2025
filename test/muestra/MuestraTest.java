@@ -18,6 +18,8 @@ import especieVinchuca.EspecieVinchuca;
 import opiniones.Opinion;
 import opiniones.TipoDeOpinion;
 import ubicacion.Ubicacion;
+import usuarios.Basico;
+import usuarios.Experto;
 import usuarios.Nivel;
 import usuarios.Usuario;
 
@@ -34,20 +36,20 @@ public class MuestraTest {
 		EspecieVinchuca especie = mock(EspecieVinchuca.class);
 //		Usuario dueño
 		Usuario usuario = mock(Usuario.class);
-		when(usuario.getNivel()).thenReturn(Nivel.BASICO);
+		when(usuario.getNivel()).thenReturn(new Basico());
 		when(usuario.esExperto()).thenReturn(false);
 //		Usuario experto
 		this.usuarioExperto = mock(Usuario.class);
-		when(usuarioExperto.getNivel()).thenReturn(Nivel.EXPERTO);
+		when(usuarioExperto.getNivel()).thenReturn(new Experto());
 		when(usuarioExperto.esExperto()).thenReturn(true);
 
 //		Usuario experto 2
 		this.usuarioExperto2 = mock(Usuario.class);
-		when(usuarioExperto2.getNivel()).thenReturn(Nivel.EXPERTO);
+		when(usuarioExperto2.getNivel()).thenReturn(new Experto());
 		when(usuarioExperto2.esExperto()).thenReturn(true);
 // 		Usuario basico
 		this.usuarioBasico = mock(Usuario.class);
-		when(usuarioBasico.getNivel()).thenReturn(Nivel.BASICO);
+		when(usuarioBasico.getNivel()).thenReturn(new Basico());
 		when(usuarioBasico.esExperto()).thenReturn(false);
 
 //		Muestra
