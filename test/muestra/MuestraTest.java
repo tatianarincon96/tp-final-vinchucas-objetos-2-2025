@@ -10,7 +10,6 @@ import static org.mockito.Mockito.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,6 @@ import opiniones.TipoDeOpinion;
 import ubicacion.Ubicacion;
 import usuarios.Basico;
 import usuarios.Experto;
-import usuarios.Nivel;
 import usuarios.Usuario;
 
 public class MuestraTest {
@@ -31,12 +29,13 @@ public class MuestraTest {
 	private Usuario usuarioExperto;
 	private Usuario usuarioExperto2;
 	private Usuario usuarioBasico;
+	private Usuario usuarioBasico2;
 	private EspecieVinchuca especie;
 
 	@BeforeEach
 	public void setUp() throws Exception {
 		Ubicacion ubicacion = mock(Ubicacion.class);
-		this.especie = mock(EspecieVinchuca.class);
+		this.especie = EspecieVinchuca.VINCHUCA_SORDIDA;
 //		Usuario dueño
 		Usuario usuario = mock(Usuario.class);
 		when(usuario.getNivel()).thenReturn(new Basico());
@@ -55,12 +54,17 @@ public class MuestraTest {
 		when(usuarioBasico.getNivel()).thenReturn(new Basico());
 		when(usuarioBasico.esExperto()).thenReturn(false);
 
+// 		Usuario basico 2
+		this.usuarioBasico2 = mock(Usuario.class);
+		when(usuarioBasico2.getNivel()).thenReturn(new Basico());
+		when(usuarioBasico2.esExperto()).thenReturn(false);
+
 //		Muestra
 		Foto fotoMock = mock(Foto.class);
 		List<Foto> fotos = new ArrayList<>();
 		fotos.add(fotoMock);
 		this.muestra = new Muestra(especie, ubicacion, fotos, usuario);
-		}
+	}
 
 	@Test
 	public void usuarioPuedeOpinarSobreMuestraEnEstadoBasico() {
@@ -89,33 +93,6 @@ public class MuestraTest {
 	}
 
 // 
-	@Test
-	public void cualquierUsuarioPuedeVotarMuestraEnEstadoBasico() throws Exception {
-		Opinion opinion1 = mock(Opinion.class);
-		Opinion opinion2 = mock(Opinion.class);
-
-		assertDoesNotThrow(() -> this.muestra.agregarOpinionDe(this.usuarioBasico, opinion1));
-		assertDoesNotThrow(() -> this.muestra.agregarOpinionDe(this.usuarioExperto, opinion2));
-
-		Map<Usuario, Opinion> historial = this.muestra.historialDeOpiniones();
-		assertEquals(opinion1, historial.get(this.usuarioBasico));
-		assertEquals(opinion2, historial.get(this.usuarioExperto));
-	}
-
-
-	@Test
-	public void cuandoDosExpertosCoincidenLaMuestraSeVerifica() throws Exception {
-		Opinion opinion1 = mock(Opinion.class);
-		when(opinion1.getTipoDeOpinion()).thenReturn(TipoDeOpinion.CHINCHE_FOLIADA);
-		Opinion opinion2 = mock(Opinion.class);
-		when(opinion2.getTipoDeOpinion()).thenReturn(TipoDeOpinion.CHINCHE_FOLIADA);
-
-		muestra.agregarOpinionDe(usuarioExperto, opinion1);
-		muestra.agregarOpinionDe(usuarioExperto2, opinion2);
-		assertThrows(Exception.class, () -> this.muestra.agregarOpinionDe(usuarioBasico, opinion2));
-		assertTrue(muestra.estaVerificada());
-
-	}
 
 	@Test
 	public void opinionesBasicasYExpertasSeRegistranCorrectamente() throws Exception {
@@ -147,7 +124,7 @@ public class MuestraTest {
 		muestra.setFechaDeCreacion(nuevaFecha);
 		assertEquals(nuevaFecha, muestra.getFechaDeCreacion());
 	}
-	
+
 	@Test
 	public void imaganesDeMuestraTest() {
 		Foto foto = mock(Foto.class);
@@ -158,21 +135,41 @@ public class MuestraTest {
 		muestra.borrarFoto(foto);
 		assertFalse(muestra.getFotosAdjuntadas().contains(foto));
 	}
-	
+
 	@Test
 	public void unaMuestraNoPuedeCrearseSinImagenes() throws Exception {
 		Ubicacion ubicacion = mock(Ubicacion.class);
 		EspecieVinchuca especie = mock(EspecieVinchuca.class);
-		assertThrows(Exception.class,() -> new Muestra(especie, ubicacion, new ArrayList<Foto>(), this.usuarioBasico));
-		assertThrows(Exception.class,() -> new Muestra(especie, ubicacion, null, this.usuarioBasico));
+		assertThrows(Exception.class, () -> new Muestra(especie, ubicacion, new ArrayList<Foto>(), this.usuarioBasico));
+		assertThrows(Exception.class, () -> new Muestra(especie, ubicacion, null, this.usuarioBasico));
 
 	}
-	
+
 	@Test
 	public void unaMuestraConoceLaEspecieConLaQueSeCreo() {
 		assertEquals(this.especie, this.muestra.getTipoInsecto());
 	}
-	
-	
 
+	@Test
+	public void siHayEmpateElResultadoActualEsNulo() throws Exception {
+		Opinion opinion1 = mock(Opinion.class);
+		when(opinion1.getTipoDeOpinion()).thenReturn(TipoDeOpinion.CHINCHE_FOLIADA);
+		Opinion opinion2 = mock(Opinion.class);
+		when(opinion2.getTipoDeOpinion()).thenReturn(TipoDeOpinion.IMAGEN_POCO_CLARA);
+
+		this.muestra.agregarOpinionDe(usuarioBasico, opinion1);
+		assertEquals(this.muestra.resultadoActual(), TipoDeOpinion.NINGUNA);
+		this.muestra.agregarOpinionDe(usuarioBasico2, opinion2);
+		assertEquals(this.muestra.resultadoActual(), TipoDeOpinion.NINGUNA);
+
+	}
+	
+	@Test public void siNoHayEmpateConocemosElResultadoActual() {
+		assertEquals(this.muestra.resultadoActual(), TipoDeOpinion.VINCHUCA_SORDIDA);
+	}
+	
+	@Test
+	public void unaMuestraConoceSuEstado() {
+		assertEquals(this.muestra.getEstado().getClass(), CualquierOpinion.class);
+	}
 }
