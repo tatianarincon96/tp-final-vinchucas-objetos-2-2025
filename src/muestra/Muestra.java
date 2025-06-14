@@ -127,9 +127,10 @@ public class Muestra extends Observable {
 		return historial;
 	}
 
+	
 	public void notificarObservadoresSobreVerificacion() {
-		// TODO: Implementar para notificar a los observadores (ZonaDeCobertura) cuando
-		// la muestra se verifique
+		this.setChanged();
+		this.notifyObservers();
 	}
 
 }
