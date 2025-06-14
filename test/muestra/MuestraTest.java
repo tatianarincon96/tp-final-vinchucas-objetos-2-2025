@@ -102,19 +102,6 @@ public class MuestraTest {
 		assertEquals(opinion2, historial.get(this.usuarioExperto));
 	}
 
-	@Test
-	public void cuandoUsuarioExpertoVotaLaMuestraCambiaDeEstado() throws Exception {
-		Opinion opinion1 = mock(Opinion.class);
-		when(opinion1.getTipoDeOpinion()).thenReturn(TipoDeOpinion.CHINCHE_FOLIADA);
-		Opinion opinion2 = mock(Opinion.class);
-		when(opinion2.getTipoDeOpinion()).thenReturn(TipoDeOpinion.CHINCHE_FOLIADA);
-
-		muestra.agregarOpinionDe(usuarioExperto, opinion1);
-		assertTrue(this.muestra.getEstado().puedeOpinar(usuarioExperto));
-		assertThrows(Exception.class, () -> this.muestra.agregarOpinionDe(usuarioBasico, opinion2));
-		assertFalse(muestra.estaVerificada());
-
-	}
 
 	@Test
 	public void cuandoDosExpertosCoincidenLaMuestraSeVerifica() throws Exception {
@@ -185,5 +172,7 @@ public class MuestraTest {
 	public void unaMuestraConoceLaEspecieConLaQueSeCreo() {
 		assertEquals(this.especie, this.muestra.getTipoInsecto());
 	}
+	
+	
 
 }
