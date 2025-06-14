@@ -9,12 +9,14 @@ import static org.mockito.Mockito.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import especieVinchuca.EspecieVinchuca;
+import foto.Foto;
 import opiniones.Opinion;
 import opiniones.TipoDeOpinion;
 import ubicacion.Ubicacion;
@@ -29,11 +31,12 @@ public class MuestraTest {
 	private Usuario usuarioExperto;
 	private Usuario usuarioExperto2;
 	private Usuario usuarioBasico;
+	private EspecieVinchuca especie;
 
 	@BeforeEach
 	public void setUp() throws Exception {
 		Ubicacion ubicacion = mock(Ubicacion.class);
-		EspecieVinchuca especie = mock(EspecieVinchuca.class);
+		this.especie = mock(EspecieVinchuca.class);
 //		Usuario dueño
 		Usuario usuario = mock(Usuario.class);
 		when(usuario.getNivel()).thenReturn(new Basico());
@@ -53,8 +56,11 @@ public class MuestraTest {
 		when(usuarioBasico.esExperto()).thenReturn(false);
 
 //		Muestra
-		this.muestra = new Muestra(especie, ubicacion, new ArrayList<>(), usuario);
-	}
+		Foto fotoMock = mock(Foto.class);
+		List<Foto> fotos = new ArrayList<>();
+		fotos.add(fotoMock);
+		this.muestra = new Muestra(especie, ubicacion, fotos, usuario);
+		}
 
 	@Test
 	public void usuarioPuedeOpinarSobreMuestraEnEstadoBasico() {
@@ -153,6 +159,31 @@ public class MuestraTest {
 		LocalDateTime nuevaFecha = LocalDateTime.of(2020, 1, 1, 0, 0);
 		muestra.setFechaDeCreacion(nuevaFecha);
 		assertEquals(nuevaFecha, muestra.getFechaDeCreacion());
+	}
+	
+	@Test
+	public void imaganesDeMuestraTest() {
+		Foto foto = mock(Foto.class);
+		assertEquals(muestra.getFotosAdjuntadas().size(), 1);
+		muestra.agregarFoto(foto);
+		assertTrue(muestra.getFotosAdjuntadas().contains(foto));
+		assertEquals(muestra.getFotosAdjuntadas().size(), 2);
+		muestra.borrarFoto(foto);
+		assertFalse(muestra.getFotosAdjuntadas().contains(foto));
+	}
+	
+	@Test
+	public void unaMuestraNoPuedeCrearseSinImagenes() throws Exception {
+		Ubicacion ubicacion = mock(Ubicacion.class);
+		EspecieVinchuca especie = mock(EspecieVinchuca.class);
+		assertThrows(Exception.class,() -> new Muestra(especie, ubicacion, new ArrayList<Foto>(), this.usuarioBasico));
+		assertThrows(Exception.class,() -> new Muestra(especie, ubicacion, null, this.usuarioBasico));
+
+	}
+	
+	@Test
+	public void unaMuestraConoceLaEspecieConLaQueSeCreo() {
+		assertEquals(this.especie, this.muestra.getTipoInsecto());
 	}
 
 }
