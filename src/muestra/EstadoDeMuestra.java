@@ -31,10 +31,6 @@ public abstract class EstadoDeMuestra {
 			opiniones.put(tipo, opiniones.getOrDefault(tipo, 0) + 1);
 		}
 
-		if (opiniones.isEmpty()) {
-			return TipoDeOpinion.NINGUNA;
-		}
-
 		int maxCantidad = Collections.max(opiniones.values());
 		List<TipoDeOpinion> empatadas = opiniones.entrySet().stream().filter(e -> e.getValue() == maxCantidad)
 				.map(Map.Entry::getKey).toList();

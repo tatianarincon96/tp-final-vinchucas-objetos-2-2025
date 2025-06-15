@@ -9,7 +9,6 @@ import opiniones.Opinion;
 import opiniones.TipoDeOpinion;
 import ubicacion.Ubicacion;
 import usuarios.Nivel;
-import usuarios.NivelState;
 import usuarios.Usuario;
 
 public class Muestra extends Observable {
@@ -25,7 +24,8 @@ public class Muestra extends Observable {
 	public Muestra(EspecieVinchuca tipoInsecto, Ubicacion ubicacion, List<Foto> fotosAdjuntadas, Usuario usuarioAutor)
 			throws Exception {
 		this.ubicacion = ubicacion;
-		this.setFotosAdjuntadas(fotosAdjuntadas != null ? fotosAdjuntadas : new ArrayList<>());
+		this.validarFotos(fotosAdjuntadas);
+		this.fotosAdjuntadas = fotosAdjuntadas;
 		this.usuarioAutor = usuarioAutor;
 		this.estado = new CualquierOpinion();
 		this.opiniones = new HashMap<>();
@@ -39,7 +39,12 @@ public class Muestra extends Observable {
 		TipoDeOpinion tipo = TipoDeOpinion.desdeEspecie(tipoInsecto);
 		this.agregarOpinionDe(usuarioAutor, new Opinion(usuarioAutor.getNivel().getNivel(), tipo));
 	}
-
+	
+	private void validarFotos(List<Foto> fotos) throws Exception {
+		if (fotos == null || fotos.size() == 0) {
+			throw new Exception("La muestra debe incluir fotos");
+		}
+	}
 	
 	public Ubicacion getUbicacion() {
 		return ubicacion;
@@ -109,9 +114,11 @@ public class Muestra extends Observable {
 	public List<Foto> getFotosAdjuntadas() {
 		return fotosAdjuntadas;
 	}
-
-	public void setFotosAdjuntadas(List<Foto> fotosAdjuntadas) {
-		this.fotosAdjuntadas = fotosAdjuntadas;
+	public void agregarFoto(Foto foto) {
+		this.fotosAdjuntadas.add(foto);
+	}
+	public void borrarFoto(Foto foto) {
+		this.fotosAdjuntadas.remove(foto);
 	}
 
 	public int cantidadDeExpertosQueOpinan(TipoDeOpinion resultadoActual) {
@@ -127,9 +134,10 @@ public class Muestra extends Observable {
 		return historial;
 	}
 
+	
 	public void notificarObservadoresSobreVerificacion() {
-		// TODO: Implementar para notificar a los observadores (ZonaDeCobertura) cuando
-		// la muestra se verifique
+		this.setChanged();
+		this.notifyObservers();
 	}
 
 }

@@ -19,6 +19,7 @@ public class SoloOpinionesExperto extends EstadoDeMuestra{
 	public EstadoDeMuestra actualizarSiAplica(Muestra muestra) {
 		TipoDeOpinion resultadoActual = muestra.resultadoActual();
 		if (muestra.cantidadDeExpertosQueOpinan(resultadoActual) == 2) {
+			muestra.notificarObservadoresSobreVerificacion();
 			return new MuestraVerificada(resultadoActual);
 		}
 		else return this;
