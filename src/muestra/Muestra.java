@@ -8,9 +8,7 @@ import foto.Foto;
 import opiniones.Opinion;
 import opiniones.TipoDeOpinion;
 import ubicacion.Ubicacion;
-import usuarios.Basico;
-import usuarios.Experto;
-import usuarios.NivelState;
+import usuarios.*;
 import usuarios.Usuario;
 
 public class Muestra extends Observable {
