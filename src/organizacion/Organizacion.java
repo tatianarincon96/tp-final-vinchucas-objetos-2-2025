@@ -67,7 +67,7 @@ public class Organizacion implements Observer {
      * @param pluginMuestra plugin que maneja la funcionalidad de nuevas muestras y muestras verificadas, representada por una instancia de FuncionalidadExterna.
      */
     public Organizacion(Ubicacion ubicacionPrincipal, int cantidadDePersonal, FuncionalidadExterna pluginMuestra) {
-        new Organizacion(ubicacionPrincipal, cantidadDePersonal, pluginMuestra, pluginMuestra);
+        this(ubicacionPrincipal, cantidadDePersonal, pluginMuestra, pluginMuestra);
     }
 
 
@@ -91,6 +91,38 @@ public class Organizacion implements Observer {
      */
     public int getCantidadDePersonal() {
         return cantidadDePersonal;
+    }
+
+    /**
+     * Obtiene el plugin que maneja la funcionalidad de nuevas muestras.
+     * @return plugin que maneja la funcionalidad de nuevas muestras, representada por una instancia de FuncionalidadExterna.
+     */
+    public FuncionalidadExterna getPluginMuestraNueva() {
+        return pluginMuestraNueva;
+    }
+
+    /**
+     * Obtiene el plugin que maneja la funcionalidad de muestras verificadas.
+     * @return plugin que maneja la funcionalidad de muestras verificadas, representada por una instancia de FuncionalidadExterna.
+     */
+    public FuncionalidadExterna getPluginMuestraVerificada() {
+        return PluginMuestraVerificada;
+    }
+
+    /**
+     * Setea el plugin que maneja la funcionalidad de muestra nueva.
+     * @param pluginMuestraNueva plugin que maneja la funcionalidad de nuevas muestras, representada por una instancia de FuncionalidadExterna.
+     */
+    public void setPluginMuestraNueva(FuncionalidadExterna pluginMuestraNueva) {
+        this.pluginMuestraNueva = pluginMuestraNueva;
+    }
+
+    /**
+     * Setea el plugin que maneja la funcionalidad de muestra verificada.
+     * @param pluginMuestraVerificada plugin que maneja la funcionalidad de muestras verificadas, representada por una instancia de FuncionalidadExterna.
+     */
+    public void setPluginMuestraVerificada(FuncionalidadExterna pluginMuestraVerificada) {
+        this.PluginMuestraVerificada = pluginMuestraVerificada;
     }
 
 

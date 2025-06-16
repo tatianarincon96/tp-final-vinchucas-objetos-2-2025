@@ -3,9 +3,7 @@ package zonaDeCobertura;
 import muestra.Muestra;
 import ubicacion.Ubicacion;
 
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 /**
  * ZonaDeCobertura es una clase que observa la verificación de las muestras ubicadas dentro de su radio y es observada por organizaciones.
@@ -53,6 +51,7 @@ public class ZonaDeCobertura extends Observable implements Observer {
         this.nombre = nombre;
         this.epicentro = epicentro;
         this.radio = radio;
+        this.muestrasEnLaZona = new ArrayList<>();
     }
 
 
