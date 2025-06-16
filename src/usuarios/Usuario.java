@@ -6,8 +6,6 @@ import muestra.Muestra;
 import opiniones.Opinion;
 import sistema.Sistema;
 import ubicacion.Ubicacion;
-
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -48,7 +46,7 @@ public class Usuario {
     public Usuario(String nombre, boolean esExpertoExterno) {
         this.id = UUID.randomUUID();
         this.nombre = nombre;
-        this.nivelDeUsuario = new Experto();
+        this.nivelDeUsuario = esExpertoExterno ? new Experto() : new Basico();
         this.muestrasCreadas = new ArrayList<>();
         this.opinionesHechas = new ArrayList<>();
         this.esExpertoExterno = esExpertoExterno;

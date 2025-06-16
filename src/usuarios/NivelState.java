@@ -4,9 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public abstract class NivelState {
-    public abstract Nivel getNivel();
     public abstract void updateNivel(Usuario usuario);
-    protected List<Integer> obtainMuestrasYOpiniones(Usuario usuario) {
+    protected final List<Integer> obtainMuestrasYOpiniones(Usuario usuario) {
         LocalDateTime ultimos30Dias = LocalDateTime.now().minusDays(30);
         int cantidadDeMuestrasCargadas = usuario.getMuestrasCreadas().stream()
                 .filter(m -> m.getFechaDeCreacion().isAfter(ultimos30Dias))

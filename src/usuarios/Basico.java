@@ -3,15 +3,6 @@ package usuarios;
 import java.util.List;
 
 public class Basico extends NivelState {
-    private Nivel nivel;
-
-    public Basico() {
-        this.nivel = Nivel.BASICO;
-    }
-
-    public Nivel getNivel() {
-        return nivel;
-    }
 
     @Override
     public void updateNivel(Usuario usuario) {
