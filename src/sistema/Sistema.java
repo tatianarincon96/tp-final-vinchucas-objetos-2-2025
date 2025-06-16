@@ -72,4 +72,18 @@ public class Sistema {
         return consulta.filtrarLasMuestras(this.muestras);
     }
 
+
+    /**
+     *
+     */
+    public void agregarLaNuevaZonaDeCobertura(ZonaDeCobertura zona) {
+        zonasDeCobertura.add(zona);
+        for (Muestra muestra : muestras) {
+            if (muestra.getUbicacion().enZona(zona)) {
+                zona.agregarNuevaMuestra(muestra);
+            }
+        }
+    }
+
+
 }

@@ -2,9 +2,7 @@ package sistema.busquedasDeMuestras;
 
 import especieVinchuca.EspecieVinchuca;
 import muestra.Muestra;
-import opiniones.TipoDeOpinion;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -45,6 +43,4 @@ public class FiltroTipoDeInsectoDetectado implements Consultable {
                 .filter(m -> m.getTipoInsecto().equals(insectoDetectado))
                 .toList();
     }
-
-
 }
