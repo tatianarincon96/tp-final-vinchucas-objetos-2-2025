@@ -4,15 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class Experto extends NivelState {
-    private Nivel nivel;
-
-    public Experto() {
-        this.nivel = Nivel.EXPERTO;
-    }
-
-    public Nivel getNivel() {
-        return nivel;
-    }
 
     @Override
     public void updateNivel(Usuario usuario) {
