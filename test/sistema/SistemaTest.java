@@ -68,8 +68,8 @@ public class SistemaTest {
 		when(ubicacion.enZona(zona1)).thenReturn(true);
 		when(ubicacion.enZona(zona2)).thenReturn(false);
 
-		sistema.agregarZonaDeCobertura(zona1);
-		sistema.agregarZonaDeCobertura(zona2);
+		sistema.agregarLaNuevaZonaDeCobertura(zona1);
+		sistema.agregarLaNuevaZonaDeCobertura(zona2);
 
 		sistema.agregarNuevaMuestra(muestra);
 
