@@ -133,5 +133,20 @@ class OrganizacionTest {
         verify(plugin1, never()).nuevoEvento(any(Organizacion.class), any(ZonaDeCobertura.class), any(Muestra.class));
     }
 
+    /**
+     * Cambia los puglins por otros
+     */
+    @Test
+    public void testCambioDePlugins() {
+        FuncionalidadExterna nuevoPlugin1 = mock(FuncionalidadExterna.class);
+        FuncionalidadExterna nuevoPlugin2 = mock(FuncionalidadExterna.class);
+
+        organizacion1.setPluginMuestraNueva(nuevoPlugin1);
+        organizacion1.setPluginMuestraVerificada(nuevoPlugin2);
+
+        assertEquals(nuevoPlugin1, organizacion1.getPluginMuestraNueva());
+        assertEquals(nuevoPlugin2, organizacion1.getPluginMuestraVerificada());
+    }
+
 
 }

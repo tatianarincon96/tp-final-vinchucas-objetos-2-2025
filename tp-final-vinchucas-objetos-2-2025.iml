@@ -9,6 +9,15 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="junit.jupiter.engine" level="project" />
-    <orderEntry type="library" name="mockito.core" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../../SitePOO2/site-main/mockito/framework &amp; dependencies/Mockito/Mockito v5.14" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/../../SitePOO2/site-main/mockito/framework &amp; dependencies/Mockito/Mockito v5.14" recursive="false" />
+      </library>
+    </orderEntry>
   </component>
 </module>
