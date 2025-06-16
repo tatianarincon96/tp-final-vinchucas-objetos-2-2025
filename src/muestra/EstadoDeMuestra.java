@@ -10,7 +10,7 @@ import opiniones.TipoDeOpinion;
 import usuarios.Usuario;
 
 public abstract class EstadoDeMuestra {
-	
+
 	public boolean puedeOpinar(Usuario usuario) {
 		return true;
 	}
@@ -22,17 +22,13 @@ public abstract class EstadoDeMuestra {
 	public abstract TipoDeOpinion resultadoActual(Muestra muestra);
 
 	public abstract EstadoDeMuestra actualizarSiAplica(Muestra muestra);
-	
+
 	public TipoDeOpinion obtenerTipoMasVotado(HashMap<Usuario, Opinion> opinionesAFiltrar) {
 		Map<TipoDeOpinion, Integer> opiniones = new HashMap<>();
 
 		for (Opinion opinion : opinionesAFiltrar.values()) {
 			TipoDeOpinion tipo = opinion.getTipoDeOpinion();
 			opiniones.put(tipo, opiniones.getOrDefault(tipo, 0) + 1);
-		}
-
-		if (opiniones.isEmpty()) {
-			return TipoDeOpinion.NINGUNA;
 		}
 
 		int maxCantidad = Collections.max(opiniones.values());

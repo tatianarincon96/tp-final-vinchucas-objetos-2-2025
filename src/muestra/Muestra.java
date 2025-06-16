@@ -1,6 +1,5 @@
 package muestra;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -9,116 +8,133 @@ import foto.Foto;
 import opiniones.Opinion;
 import opiniones.TipoDeOpinion;
 import ubicacion.Ubicacion;
+import usuarios.*;
 import usuarios.Usuario;
 
 public class Muestra extends Observable {
-//    private UUID id;
-	private LocalDateTime fechaDeCreacion;
-	private Ubicacion ubicacion;
-	private List<Foto> fotosAdjuntadas;
-	private Usuario usuarioAutor;
-	private EstadoDeMuestra estado;
-	private HashMap<Usuario, Opinion> opinionesExpertas;
-	private HashMap<Usuario, Opinion> opinionesBasicas;
+        private LocalDateTime fechaDeCreacion;
+        private Ubicacion ubicacion;
+        private List<Foto> fotosAdjuntadas;
+        private Usuario usuarioAutor;
+        private EstadoDeMuestra estado;
+        private HashMap<Class<? extends NivelState>, HashMap<Usuario, Opinion>> opiniones;
+        private LocalDateTime fechaUltimaVotacion;
+        private EspecieVinchuca tipoInsecto;
 
-	public Muestra(EspecieVinchuca tipoInsecto, Ubicacion ubicacion, List<Foto> fotosAdjuntadas, Usuario usuarioAutor) {
-//        this.id = UUID.randomUUID();
-		this.ubicacion = ubicacion;
-		this.setFotosAdjuntadas(fotosAdjuntadas != null ? fotosAdjuntadas : new ArrayList<>());
-		this.usuarioAutor = usuarioAutor;
-		this.setFechaDeCreacion(LocalDateTime.now());
-		this.estado = new CualquierOpinion();
-		this.opinionesBasicas = new HashMap<>();
-		this.opinionesExpertas = new HashMap<>();
+        public Muestra(EspecieVinchuca tipoInsecto, Ubicacion ubicacion, List<Foto> fotosAdjuntadas, Usuario usuarioAutor)
+                throws Exception {
+            this.ubicacion = ubicacion;
+            this.validarFotos(fotosAdjuntadas);
+            this.fotosAdjuntadas = fotosAdjuntadas;
+            this.usuarioAutor = usuarioAutor;
+            this.estado = new CualquierOpinion();
+            this.opiniones = new HashMap<>();
+            this.fechaUltimaVotacion = LocalDateTime.now();
+            this.fechaDeCreacion = LocalDateTime.now();
+            this.tipoInsecto = tipoInsecto;
 
-	}
+            TipoDeOpinion tipo = TipoDeOpinion.desdeEspecie(tipoInsecto);
+            this.agregarOpinionDe(usuarioAutor, new Opinion(usuarioAutor.getNivel().getClass(), tipo));
+        }
 
-	public Ubicacion getUbicacion() {
-		return ubicacion;
-	}
+        private void validarFotos(List<Foto> fotos) throws Exception {
+            if (fotos == null || fotos.size() == 0) {
+                throw new Exception("La muestra debe incluir fotos");
+            }
+        }
 
-	public LocalDateTime getFechaUltimaVotacion() {
-		// TODO: Implementar para el filtroUltimaVotacion
-		return null;
-	}
+        public Ubicacion getUbicacion() {
+            return ubicacion;
+        }
 
-	public EspecieVinchuca getTipoInsecto() {
-		// TODO: Implementar para el filtroTipoDeInsectoDetectado
-		return null;
-	}
+        public Usuario getUsuario() {
+            return this.usuarioAutor;
+        }
+
+        public LocalDateTime getFechaUltimaVotacion() {
+            return this.fechaUltimaVotacion;
+        }
+
+        public EspecieVinchuca getTipoInsecto() {
+            return this.tipoInsecto;
+        }
+
+        public boolean tieneOpinionesDeExperto() {
+            return this.opiniones.containsKey(Experto.class);
+        }
+
+        private boolean usuarioYaVoto(Usuario usuario) {
+            return this.opiniones.values().stream().anyMatch(m -> m.containsKey(usuario));
+        }
+
+        boolean puedeOpinar(Usuario usuario) {
+            return this.estado.puedeOpinar(usuario) && !this.usuarioYaVoto(usuario);
+        }
+
+        public void agregarOpinionDe(Usuario usuario, Opinion opinion) throws Exception {
+            if (!this.puedeOpinar(usuario)) {
+                throw new Exception("El usuario no puede opinar sobre esta muestra");
+            }
+            this.opiniones
+                    .computeIfAbsent(usuario.getNivel().getClass(), k -> new HashMap<>())
+                    .put(usuario, opinion);
+            this.estado = this.estado.actualizarSiAplica(this);
+        }
+
+        public EstadoDeMuestra getEstado() {
+            return this.estado;
+        }
+        public boolean estaVerificada() {
+            return this.estado.estaVerificada();
+        }
+
+        public TipoDeOpinion resultadoActual() {
+            return this.estado.resultadoActual(this);
+        }
+
+        public LocalDateTime getFechaDeCreacion() {
+            return fechaDeCreacion;
+        }
+
+        public void setFechaDeCreacion(LocalDateTime fechaDeCreacion) {
+            this.fechaDeCreacion = fechaDeCreacion;
+        }
+
+        public HashMap<Usuario, Opinion> getOpinionesExpertas() {
+            return this.opiniones.get(Experto.class);
+        }
+
+        public HashMap<Usuario, Opinion> getOpinionesBasicas() {
+            return this.opiniones.get(Basico.class);
+        }
+
+        public List<Foto> getFotosAdjuntadas() {
+            return fotosAdjuntadas;
+        }
+        public void agregarFoto(Foto foto) {
+            this.fotosAdjuntadas.add(foto);
+        }
+        public void borrarFoto(Foto foto) {
+            this.fotosAdjuntadas.remove(foto);
+        }
+
+        public int cantidadDeExpertosQueOpinan(TipoDeOpinion resultadoActual) {
+            return (int) this.opiniones.get(Experto.class).values().stream()
+                    .filter(op -> op.getTipoDeOpinion().equals(resultadoActual)).count();
+        }
+
+        public Map<Usuario, Opinion> historialDeOpiniones() {
+            Map<Usuario, Opinion> historial = new HashMap<>();
+            for (Map<Usuario, Opinion> subMap : opiniones.values()) {
+                historial.putAll(subMap);
+            }
+            return historial;
+        }
 
 
-	public boolean tieneOpinionesDeExperto() {
-		return this.opinionesExpertas.size() > 0;
-	}
-	
-	private boolean usuarioYaVoto(Usuario usuario) {
-		return this.opinionesBasicas.containsKey(usuario) || this.opinionesExpertas.containsKey(usuario);
-	}
-	private boolean puedeOpinar(Usuario usuario) {
-		return this.estado.puedeOpinar(usuario) && !this.usuarioYaVoto(usuario) && !(this.usuarioAutor == usuario);
-	}
-	public void agregarOpinionDe(Usuario usuario, Opinion opinion) throws Exception {
-		if (this.puedeOpinar(usuario)) {
-			if (usuario.esExperto()) {
-				this.opinionesExpertas.put(usuario, opinion);
-				this.estado = this.estado.actualizarSiAplica(this);
-			} else {
-				this.opinionesBasicas.put(usuario, opinion);
-			}
-		}else {
-			throw new Exception("El usuario no puede opinar sobre esta muestra");
-		}
-
-	}
-
-	public boolean estaVerificada() {
-		return this.estado.estaVerificada();
-	}
-
-	public TipoDeOpinion resultadoActual() {
-		return this.estado.resultadoActual(this);
-	}
-
-	public LocalDateTime getFechaDeCreacion() {
-		return fechaDeCreacion;
-	}
-
-	public void setFechaDeCreacion(LocalDateTime fechaDeCreacion) {
-		this.fechaDeCreacion = fechaDeCreacion;
-	}
-
-	public List<Foto> getFotosAdjuntadas() {
-		return fotosAdjuntadas;
-	}
-
-	public HashMap<Usuario, Opinion> getOpinionesExpertas() {
-		return this.opinionesExpertas;
-	}
-
-	public HashMap<Usuario, Opinion> getOpinionesBasicas() {
-		return this.opinionesBasicas;
-	}
-
-	public void setFotosAdjuntadas(List<Foto> fotosAdjuntadas) {
-		this.fotosAdjuntadas = fotosAdjuntadas;
-	}
-
-	public int cantidadDeExpertosQueOpinan(TipoDeOpinion resultadoActual) {
-		return (int) this.opinionesExpertas.values().stream()
-				.filter(op -> op.getTipoDeOpinion().equals(resultadoActual)).count();
-	}
-
-	public HashMap<Usuario, Opinion> historialDeOpiniones() {
-		HashMap<Usuario, Opinion> historial = new HashMap<>();
-		historial.putAll(opinionesBasicas);
-		historial.putAll(opinionesExpertas);
-		return historial;
-
-	}
-
-	public void notificarObservadoresSobreVerificacion() {
-		// TODO: Implementar para notificar a los observadores (ZonaDeCobertura) cuando la muestra se verifique
-	}
+        public void notificarObservadoresSobreVerificacion() {
+            this.setChanged();
+            this.notifyObservers();
+        }
 
 }

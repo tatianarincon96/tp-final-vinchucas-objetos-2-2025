@@ -56,9 +56,9 @@ public class Sistema {
      */
     public void actualizarNivelDeTodosLosUsuarios() {
         for (Muestra muestra : muestras) {
-            Usuario usuario = muestra.getUsuarioAutor();
+            Usuario usuario = muestra.getUsuario();
             if (usuario != null) {
-                usuario.updateNivel();
+                usuario.getNivel().updateNivel(usuario);
             }
         }
     }
