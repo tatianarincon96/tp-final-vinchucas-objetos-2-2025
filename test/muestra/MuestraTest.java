@@ -25,6 +25,7 @@ import usuarios.Usuario;
 
 public class MuestraTest {
 
+	private Foto fotoMock;
 	private Muestra muestra;
 	private Usuario usuarioExperto;
 	private Usuario usuarioExperto2;
@@ -60,10 +61,8 @@ public class MuestraTest {
 		when(usuarioBasico2.esExperto()).thenReturn(false);
 
 //		Muestra
-		Foto fotoMock = mock(Foto.class);
-		List<Foto> fotos = new ArrayList<>();
-		fotos.add(fotoMock);
-		this.muestra = new Muestra(especie, ubicacion, fotos, usuario);
+		fotoMock = mock(Foto.class);
+		this.muestra = new Muestra(especie, ubicacion, fotoMock, usuario);
 	}
 
 	@Test
@@ -127,20 +126,13 @@ public class MuestraTest {
 
 	@Test
 	public void imaganesDeMuestraTest() {
-		Foto foto = mock(Foto.class);
-		assertEquals(muestra.getFotosAdjuntadas().size(), 1);
-		muestra.agregarFoto(foto);
-		assertTrue(muestra.getFotosAdjuntadas().contains(foto));
-		assertEquals(muestra.getFotosAdjuntadas().size(), 2);
-		muestra.borrarFoto(foto);
-		assertFalse(muestra.getFotosAdjuntadas().contains(foto));
+		assertEquals(fotoMock, muestra.getFotoAdjuntada());
 	}
 
 	@Test
 	public void unaMuestraNoPuedeCrearseSinImagenes() throws Exception {
 		Ubicacion ubicacion = mock(Ubicacion.class);
 		EspecieVinchuca especie = mock(EspecieVinchuca.class);
-		assertThrows(Exception.class, () -> new Muestra(especie, ubicacion, new ArrayList<Foto>(), this.usuarioBasico));
 		assertThrows(Exception.class, () -> new Muestra(especie, ubicacion, null, this.usuarioBasico));
 
 	}

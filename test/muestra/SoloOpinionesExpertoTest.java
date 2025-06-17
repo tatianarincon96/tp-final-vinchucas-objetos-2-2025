@@ -53,9 +53,7 @@ public class SoloOpinionesExpertoTest {
 // 		Usuario basico 2
 //		Muestra
 		Foto fotoMock = mock(Foto.class);
-		List<Foto> fotos = new ArrayList<>();
-		fotos.add(fotoMock);
-		this.muestra = new Muestra(especie, ubicacion, fotos, usuario);
+		this.muestra = new Muestra(especie, ubicacion, fotoMock, usuario);
 		}
 	@Test
 	public void cuandoDosExpertosCoincidenLaMuestraSeVerifica() throws Exception {

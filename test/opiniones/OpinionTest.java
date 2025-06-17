@@ -4,7 +4,6 @@ import especieVinchuca.EspecieVinchuca;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import usuarios.Basico;
-import usuarios.NivelState;
 
 import java.time.LocalDateTime;
 
@@ -38,6 +37,8 @@ class OpinionTest {
         when(opinionMock.getTipoDeOpinion()).thenReturn(TipoDeOpinion.IMAGEN_POCO_CLARA);
         assertEquals(TipoDeOpinion.IMAGEN_POCO_CLARA, opinionMock.getTipoDeOpinion());
         verify(opinionMock).getTipoDeOpinion();
+        boolean esVinchuca = opinionMock.getTipoDeOpinion().esRelacionadaConVinchuca();
+        assertFalse(esVinchuca, "La opinión debe estar relacionada con una especie de vinchuca");
     }
 
     @Test
@@ -66,5 +67,18 @@ class OpinionTest {
     void fechaOpinadaNoEsNulo() {
         Opinion opinion = new Opinion(Basico.class, TipoDeOpinion.VINCHUCA_INFESTANTS);
         assertNotNull(opinion.getFechaOpinada(), "La fecha de la opinión no debe ser nula");
+    }
+
+    @Test
+    void retornaTipoCorrectoSiExisteEspecie() {
+        assertEquals(TipoDeOpinion.VINCHUCA_INFESTANTS,
+                TipoDeOpinion.desdeEspecie(EspecieVinchuca.VINCHUCA_INFESTANS));
+    }
+
+    @Test
+    void retornaNingunaSiNoExisteEspecie() {
+        // Suponiendo que EspecieVinchuca tiene un valor que no está en ningún TipoDeOpinion
+        assertEquals(TipoDeOpinion.NINGUNA,
+                TipoDeOpinion.desdeEspecie(null));
     }
 }
