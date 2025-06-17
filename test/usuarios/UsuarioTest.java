@@ -4,6 +4,9 @@ import especieVinchuca.EspecieVinchuca;
 import foto.Foto;
 import muestra.Muestra;
 import opiniones.Opinion;
+import opiniones.TipoDeOpinion;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import sistema.Sistema;
 import ubicacion.Ubicacion;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,12 +20,17 @@ import static org.mockito.Mockito.*;
 
 class UsuarioTest {
 
-    Usuario usuario;
+    @Mock
     Sistema sistemaMock;
+    @Mock
+    NivelState nivelMock;
+    @InjectMocks
+    Usuario usuario;
 
     @BeforeEach
     void setUp() {
         sistemaMock = mock(Sistema.class);
+        nivelMock = mock(NivelState.class);
         usuario = new Usuario("Juan");
     }
 
@@ -31,7 +39,7 @@ class UsuarioTest {
         Ubicacion ubicacion = mock(Ubicacion.class);
         Foto foto = mock(Foto.class);
 
-        usuario.registrarMuestra(EspecieVinchuca.VINCHUCA_GUASAYANA, ubicacion, List.of(foto));
+        usuario.registrarMuestra(EspecieVinchuca.VINCHUCA_GUASAYANA, ubicacion, foto);
 
         assertEquals(1, usuario.getMuestrasCreadas().size());
     }
@@ -57,19 +65,24 @@ class UsuarioTest {
         Opinion opinionMock = mock(Opinion.class);
         when(opinionMock.getFechaOpinada()).thenReturn(LocalDateTime.now().minusDays(1));
 
-        // Agregar 11 muestras y 21 opiniones recientes
+        // Agregar 11 muestras recientes
         for (int i = 0; i < 11; i++) usuarioTest.getMuestrasCreadas().add(muestraMock);
+
+        assertFalse(usuarioTest.getNivel().esExperto());
+        assertEquals(Basico.class, usuarioTest.getNivel().getClass());
+
+        // Agregar 21 opiniones recientes
         for (int i = 0; i < 21; i++) usuarioTest.getOpinionesHechas().add(opinionMock);
 
         usuarioTest.getNivel().updateNivel(usuarioTest);
-
         assertEquals(Experto.class, usuarioTest.getNivel().getClass());
         assertTrue(usuarioTest.getNivel().esExperto());
     }
 
     @Test
-    void updateNivel_cambiaANivelExpertoYVolverABasico() {
-        Usuario usuarioTest = new Usuario("Ana");
+    void updateNivel_cambiarNivelAExpertoYVolverABasico() {
+        Usuario usuario = new Usuario("Ana");
+        assertEquals(Basico.class, usuario.getNivel().getClass());
         // Mock de muestra con fecha reciente
         Muestra muestraMock = mock(Muestra.class);
         when(muestraMock.getFechaDeCreacion()).thenReturn(LocalDateTime.now().minusDays(1));
@@ -77,23 +90,35 @@ class UsuarioTest {
         Opinion opinionMock = mock(Opinion.class);
         when(opinionMock.getFechaOpinada()).thenReturn(LocalDateTime.now().minusDays(1));
 
-        // Agregar 11 muestras y 21 opiniones recientes
-        for (int i = 0; i < 11; i++) usuarioTest.getMuestrasCreadas().add(muestraMock);
-        for (int i = 0; i < 21; i++) usuarioTest.getOpinionesHechas().add(opinionMock);
+        // Agregar 11 muestras y 21 opiniones recientes y paso a Experto
+        for (int i = 0; i < 11; i++) usuario.getMuestrasCreadas().add(muestraMock);
+        for (int i = 0; i < 21; i++) usuario.getOpinionesHechas().add(opinionMock);
+        usuario.getNivel().updateNivel(usuario);
+        assertEquals(Experto.class, usuario.getNivel().getClass());
+        assertTrue(usuario.esExperto());
 
-        usuarioTest.getNivel().updateNivel(usuarioTest);
+        // Remuevo 21 opiniones recientes y vuelvo a Básico
+        usuario.getOpinionesHechas().clear();
+        usuario.getNivel().updateNivel(usuario);
+        assertEquals(Basico.class, usuario.getNivel().getClass());
+        assertFalse(usuario.esExperto());
 
-        assertEquals(Experto.class, usuarioTest.getNivel().getClass());
-        assertTrue(usuarioTest.getNivel().esExperto());
+        // Testeo que siga siendo porque no hay opiniones recientes
+        usuario.getNivel().updateNivel(usuario);
+        assertEquals(Basico.class, usuario.getNivel().getClass());
 
-        // Simular que pasan 31 días
-        when(muestraMock.getFechaDeCreacion()).thenReturn(LocalDateTime.now().minusDays(31));
-        when(opinionMock.getFechaOpinada()).thenReturn(LocalDateTime.now().minusDays(31));
+        // Agrego nuevamente 21 opiniones y vuelvo a Experto
+        for (int i = 0; i < 21; i++) usuario.getOpinionesHechas().add(opinionMock);
+        usuario.getNivel().updateNivel(usuario);
 
-        usuarioTest.getNivel().updateNivel(usuarioTest);
+        // Verifico que siga siendo experto cuando se mantiene el número de muestras y opiniones
+        usuario.getNivel().updateNivel(usuario);
+        assertEquals(Experto.class, usuario.getNivel().getClass());
 
-        assertEquals(Basico.class, usuarioTest.getNivel().getClass());
-        assertFalse(usuarioTest.getNivel().esExperto());
+        // Remuevo las muestras y vuelvo a Básico
+        usuario.getMuestrasCreadas().clear();
+        usuario.getNivel().updateNivel(usuario);
+        assertEquals(Basico.class, usuario.getNivel().getClass());
     }
 
     @Test
@@ -128,5 +153,22 @@ class UsuarioTest {
     void esExperto_falseSiNoEsExpertoExtremo() {
         Usuario usuarioTest = new Usuario("Ana", false);
         assertFalse(usuarioTest.esExpertoExterno());
+    }
+
+    @Test
+    void registrarMuestra_agregaMuestraYEsExpertoExterno() throws Exception {
+        Usuario usuarioTest = new Usuario("Ana", true);
+        Ubicacion ubicacion = mock(Ubicacion.class);
+        Foto foto = mock(Foto.class);
+        usuarioTest.registrarMuestra(EspecieVinchuca.VINCHUCA_GUASAYANA, ubicacion, foto);
+        assertFalse(usuarioTest.getMuestrasCreadas().isEmpty());
+    }
+
+    @Test
+    void opinaSobreMuestra_esExpertoExterno() throws Exception {
+        Usuario usuarioTest = new Usuario("Ana", true);
+        Muestra muestraMock = mock(Muestra.class);
+        usuarioTest.opinar(muestraMock, new Opinion(usuarioTest.getNivel().getClass(), TipoDeOpinion.IMAGEN_POCO_CLARA));
+        assertFalse(usuarioTest.getOpinionesHechas().isEmpty());
     }
 }

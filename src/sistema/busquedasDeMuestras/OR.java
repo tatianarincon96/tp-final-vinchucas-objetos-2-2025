@@ -2,7 +2,7 @@ package sistema.busquedasDeMuestras;
 
 import muestra.Muestra;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * Clase que representa una operación AND entre dos consultas.
@@ -48,7 +48,8 @@ public class OR implements Consultable {
         List<Muestra> resultadoFiltro1 = primeraConsulta.filtrarLasMuestras(muestras);
         List<Muestra> resultadoFiltro2 = segundaConsulta.filtrarLasMuestras(muestras);
 
-        resultadoFiltro1.addAll(resultadoFiltro2);
-        return resultadoFiltro1;
+        Set<Muestra> resultado= new HashSet<>(resultadoFiltro1);
+        resultado.addAll(resultadoFiltro2);
+        return new ArrayList<>(resultado);
     }
 }

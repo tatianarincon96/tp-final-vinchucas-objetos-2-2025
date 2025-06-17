@@ -59,13 +59,13 @@ public class Usuario {
      * Registra una nueva muestra creada por el usuario.
      * @param especie Especie de la vinchuca observada.
      * @param ubicacion Ubicación geográfica donde se tomó la muestra.
-     * @param fotos Lista de fotos asociadas a la muestra.
+     * @param foto Foto asociada a la muestra.
      */
-    public void registrarMuestra(EspecieVinchuca especie, Ubicacion ubicacion, List<Foto> fotos) throws Exception {
+    public void registrarMuestra(EspecieVinchuca especie, Ubicacion ubicacion, Foto foto) throws Exception {
         if (!esExpertoExterno) {
             nivelDeUsuario.updateNivel(this);
         }
-        Muestra nuevaMuestra = new Muestra(especie, ubicacion, fotos, this);
+        Muestra nuevaMuestra = new Muestra(especie, ubicacion, foto, this);
         this.muestrasCreadas.add(nuevaMuestra);
         sistema.agregarNuevaMuestra(nuevaMuestra);
     }

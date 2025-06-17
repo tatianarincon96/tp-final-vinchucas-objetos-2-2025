@@ -14,18 +14,18 @@ import usuarios.Usuario;
 public class Muestra extends Observable {
         private LocalDateTime fechaDeCreacion;
         private Ubicacion ubicacion;
-        private List<Foto> fotosAdjuntadas;
+        private Foto fotoAdjuntada;
         private Usuario usuarioAutor;
         private EstadoDeMuestra estado;
         private HashMap<Class<? extends NivelState>, HashMap<Usuario, Opinion>> opiniones;
         private LocalDateTime fechaUltimaVotacion;
         private EspecieVinchuca tipoInsecto;
 
-        public Muestra(EspecieVinchuca tipoInsecto, Ubicacion ubicacion, List<Foto> fotosAdjuntadas, Usuario usuarioAutor)
+        public Muestra(EspecieVinchuca tipoInsecto, Ubicacion ubicacion, Foto fotoAdjuntada, Usuario usuarioAutor)
                 throws Exception {
             this.ubicacion = ubicacion;
-            this.validarFotos(fotosAdjuntadas);
-            this.fotosAdjuntadas = fotosAdjuntadas;
+            this.validarFoto(fotoAdjuntada);
+            this.fotoAdjuntada = fotoAdjuntada;
             this.usuarioAutor = usuarioAutor;
             this.estado = new CualquierOpinion();
             this.opiniones = new HashMap<>();
@@ -37,9 +37,9 @@ public class Muestra extends Observable {
             this.agregarOpinionDe(usuarioAutor, new Opinion(usuarioAutor.getNivel().getClass(), tipo));
         }
 
-        private void validarFotos(List<Foto> fotos) throws Exception {
-            if (fotos == null || fotos.size() == 0) {
-                throw new Exception("La muestra debe incluir fotos");
+        private void validarFoto(Foto foto) throws Exception {
+            if (foto == null) {
+                throw new Exception("La muestra debe incluir foto");
             }
         }
 
@@ -108,14 +108,8 @@ public class Muestra extends Observable {
             return this.opiniones.get(Basico.class);
         }
 
-        public List<Foto> getFotosAdjuntadas() {
-            return fotosAdjuntadas;
-        }
-        public void agregarFoto(Foto foto) {
-            this.fotosAdjuntadas.add(foto);
-        }
-        public void borrarFoto(Foto foto) {
-            this.fotosAdjuntadas.remove(foto);
+        public Foto getFotoAdjuntada() {
+            return fotoAdjuntada;
         }
 
         public int cantidadDeExpertosQueOpinan(TipoDeOpinion resultadoActual) {

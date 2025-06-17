@@ -39,13 +39,4 @@ public class Opinion {
     public Class<? extends NivelState> getNivelDeOpinion() {
         return nivelDeOpinion;
     }
-
-    @Override
-    public String toString() {
-        return "Opinion{" +
-                "tipoDeOpinion=" + tipoDeOpinion +
-                ", fechaOpinada=" + fechaOpinada +
-                ", nivelDeOpinion=" + nivelDeOpinion +
-                '}';
-    }
 }

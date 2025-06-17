@@ -7,11 +7,10 @@ public enum EspecieVinchuca {
 
     @Override
     public String toString() {
-        switch (this) {
-            case VINCHUCA_INFESTANS: return "Vinchuca infestans";
-            case VINCHUCA_SORDIDA: return "Vinchuca sordida";
-            case VINCHUCA_GUASAYANA: return "Vinchuca guasayana";
-            default: return super.toString();
-        }
+        return switch (this) {
+            case VINCHUCA_INFESTANS -> "Vinchuca infestans";
+            case VINCHUCA_SORDIDA -> "Vinchuca sordida";
+            case VINCHUCA_GUASAYANA -> "Vinchuca guasayana";
+        };
     }
 }
