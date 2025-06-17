@@ -74,7 +74,8 @@ public class Sistema {
 
 
     /**
-     *
+     * Agrega una nueva zona de cobertura al sistema y actualiza las muestras existentes
+     * @param zona ZonaDeCobertura que se va a agregar al sistema.
      */
     public void agregarLaNuevaZonaDeCobertura(ZonaDeCobertura zona) {
         zonasDeCobertura.add(zona);

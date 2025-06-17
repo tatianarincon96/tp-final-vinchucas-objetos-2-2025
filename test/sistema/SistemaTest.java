@@ -31,7 +31,7 @@ public class SistemaTest {
 
 	@Test
 	public void actualizarNivelDeUsuariosLlamaUpdateNivel() {
-
+		Muestra muestra0 = mock(Muestra.class);
 		Muestra muestra1 = mock(Muestra.class);
 		Muestra muestra2 = mock(Muestra.class);
 
@@ -39,6 +39,9 @@ public class SistemaTest {
 		Usuario usuario2 = mock(Usuario.class);
 		NivelState nivel1 = mock(NivelState.class);
 		NivelState nivel2 = mock(NivelState.class);
+
+		sistema.agregarNuevaMuestra(muestra0);
+		sistema.actualizarNivelDeTodosLosUsuarios();
 
 		when(muestra1.getUsuario()).thenReturn(usuario1);
 		when(usuario1.getNivel()).thenReturn(nivel1);
@@ -94,6 +97,30 @@ public class SistemaTest {
 		List<Muestra> resultado = sistema.filtrarLasMuestrasPor(consulta);
 
 		assertEquals(resultadoEsperado, resultado);
+	}
+
+	@Test
+	public void agregarLaNuevaZonaDeCoberturaAgregaSoloMuestrasEnZona() {
+		Sistema sistema = new Sistema();
+
+		Muestra muestraEnZona = mock(Muestra.class);
+		Muestra muestraFueraZona = mock(Muestra.class);
+		Ubicacion ubicacionEnZona = mock(Ubicacion.class);
+		Ubicacion ubicacionFueraZona = mock(Ubicacion.class);
+		ZonaDeCobertura zona = mock(ZonaDeCobertura.class);
+
+		when(muestraEnZona.getUbicacion()).thenReturn(ubicacionEnZona);
+		when(muestraFueraZona.getUbicacion()).thenReturn(ubicacionFueraZona);
+		when(ubicacionEnZona.enZona(zona)).thenReturn(true);
+		when(ubicacionFueraZona.enZona(zona)).thenReturn(false);
+
+		sistema.agregarNuevaMuestra(muestraEnZona);
+		sistema.agregarNuevaMuestra(muestraFueraZona);
+
+		sistema.agregarLaNuevaZonaDeCobertura(zona);
+
+		verify(zona).agregarNuevaMuestra(muestraEnZona);
+		verify(zona, never()).agregarNuevaMuestra(muestraFueraZona);
 	}
 
 }
