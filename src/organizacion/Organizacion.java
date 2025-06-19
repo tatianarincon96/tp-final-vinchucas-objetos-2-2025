@@ -30,6 +30,11 @@ public class Organizacion implements Observer {
     private int cantidadDePersonal;
 
     /**
+     * Tipo de organización, representada por una instancia de TipoDeOrganizacion.
+     */
+    private TipoDeOrganizacion tipoDeOrganizacion;
+
+    /**
      * Plugin que maneja la funcionalidad de nuevas muestras.
      */
     private FuncionalidadExterna pluginMuestraNueva;
@@ -43,19 +48,20 @@ public class Organizacion implements Observer {
 
 
 
-
     // Constructores de la clase Organizacion
 
     /**
      * Constructor de la clase Organizacion.
      * @param ubicacionPrincipal ubicacion principal de la organización, representada por una instancia de Ubicacion.
      * @param cantidadDePersonal cantidad de personal que trabaja en la organización.
+     * @param tipoDeOrganizacion tipo de organización, representada por una instancia de TipoDeOrganizacion.
      * @param pluginMuestraNueva plugin que maneja la funcionalidad de nuevas muestras, representada por una instancia de FuncionalidadExterna.
      * @param pluginMuestraVerificada plugin que maneja la funcionalidad de muestras verificadas, representada por una instancia de FuncionalidadExterna.
      */
-    public Organizacion(Ubicacion ubicacionPrincipal, int cantidadDePersonal, FuncionalidadExterna pluginMuestraNueva, FuncionalidadExterna pluginMuestraVerificada) {
+    public Organizacion(Ubicacion ubicacionPrincipal, int cantidadDePersonal, TipoDeOrganizacion tipoDeOrganizacion , FuncionalidadExterna pluginMuestraNueva, FuncionalidadExterna pluginMuestraVerificada) {
         this.ubicacionPrincipal = ubicacionPrincipal;
         this.cantidadDePersonal = cantidadDePersonal;
+        this.tipoDeOrganizacion = tipoDeOrganizacion;
         this.pluginMuestraNueva = pluginMuestraNueva;
         this.PluginMuestraVerificada = pluginMuestraVerificada;
     }
@@ -64,10 +70,11 @@ public class Organizacion implements Observer {
      * Constructor de la clase Organizacion.
      * @param ubicacionPrincipal ubicacion principal de la organización, representada por una instancia de Ubicacion.
      * @param cantidadDePersonal cantidad de personal que trabaja en la organización.
+     * @param tipoDeOrganizacion tipo de organización, representada por una instancia de TipoDeOrganizacion.
      * @param pluginMuestra plugin que maneja la funcionalidad de nuevas muestras y muestras verificadas, representada por una instancia de FuncionalidadExterna.
      */
-    public Organizacion(Ubicacion ubicacionPrincipal, int cantidadDePersonal, FuncionalidadExterna pluginMuestra) {
-        this(ubicacionPrincipal, cantidadDePersonal, pluginMuestra, pluginMuestra);
+    public Organizacion(Ubicacion ubicacionPrincipal, int cantidadDePersonal, TipoDeOrganizacion tipoDeOrganizacion, FuncionalidadExterna pluginMuestra) {
+        this(ubicacionPrincipal, cantidadDePersonal, tipoDeOrganizacion, pluginMuestra, pluginMuestra);
     }
 
 
@@ -91,6 +98,14 @@ public class Organizacion implements Observer {
      */
     public int getCantidadDePersonal() {
         return cantidadDePersonal;
+    }
+
+    /**
+     * Obtiene el tipo de organización.
+     * @return tipo de organización, representada por una instancia de TipoDeOrganizacion.
+     */
+    public TipoDeOrganizacion getTipoDeOrganizacion() {
+        return tipoDeOrganizacion;
     }
 
     /**
