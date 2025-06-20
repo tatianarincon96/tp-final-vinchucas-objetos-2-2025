@@ -14,6 +14,7 @@ class OrganizacionTest {
     private Ubicacion ubicacion1;
     private FuncionalidadExterna plugin1;
     private FuncionalidadExterna plugin2;
+    private TipoDeOrganizacion tipoDeOrganizacion;
     private Organizacion organizacion1;
     private ZonaDeCobertura zona1;
     private Muestra muestra1;
@@ -25,7 +26,9 @@ class OrganizacionTest {
         plugin1 = mock(FuncionalidadExterna.class);
         plugin2 = mock(FuncionalidadExterna.class);
 
-        organizacion1 = new Organizacion(ubicacion1, 10, plugin1, plugin2);
+        tipoDeOrganizacion = TipoDeOrganizacion.SALUD;
+
+        organizacion1 = new Organizacion(ubicacion1, 10, tipoDeOrganizacion, plugin1, plugin2);
 
         zona1 = mock(ZonaDeCobertura.class);
         muestra1 = mock(Muestra.class);
@@ -37,10 +40,11 @@ class OrganizacionTest {
      */
     @Test
     public void testConstructorConDosPlugins() {
-        Organizacion organizacion = new Organizacion(ubicacion1, 10, plugin1, plugin2);
+        Organizacion organizacion = new Organizacion(ubicacion1, 10, tipoDeOrganizacion, plugin1, plugin2);
 
         assertEquals(ubicacion1, organizacion.getUbicacionPrincipal());
         assertEquals(10, organizacion.getCantidadDePersonal());
+        assertEquals(tipoDeOrganizacion, organizacion.getTipoDeOrganizacion());
         assertEquals(plugin1, organizacion.getPluginMuestraNueva());
         assertEquals(plugin2, organizacion.getPluginMuestraVerificada());
     }
@@ -51,32 +55,13 @@ class OrganizacionTest {
      */
     @Test
     public void testConstructorConUnPluginInicializaCorrectamente() {
-        Organizacion organizacion = new Organizacion(ubicacion1, 10, plugin1);
+        Organizacion organizacion = new Organizacion(ubicacion1, 10, tipoDeOrganizacion, plugin1);
 
         assertEquals(ubicacion1, organizacion.getUbicacionPrincipal());
         assertEquals(10, organizacion.getCantidadDePersonal());
+        assertEquals(tipoDeOrganizacion, organizacion.getTipoDeOrganizacion());
         assertEquals(plugin1, organizacion.getPluginMuestraNueva());
         assertEquals(plugin1, organizacion.getPluginMuestraVerificada());
-    }
-
-
-    /**
-     * Verifica que getUbicacionPrincipal() devuelve el objeto Ubicacion correcto.
-     */
-    @Test
-    public void testGetUbicacionPrincipalDevuelveUbicacionCorrecta() {
-        Organizacion organizacion = new Organizacion(ubicacion1, 10, plugin1, plugin2);
-        assertEquals(ubicacion1, organizacion.getUbicacionPrincipal());
-    }
-
-
-    /**
-     * Verifica que getCantidadDePersonal() devuelve el valor correcto.
-     */
-    @Test
-    public void testGetCantidadDePersonalDevuelveCantidadCorrecta() {
-        Organizacion organizacion = new Organizacion(ubicacion1, 10, plugin1, plugin2);
-        assertEquals(10, organizacion.getCantidadDePersonal());
     }
 
 
