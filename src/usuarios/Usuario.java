@@ -28,14 +28,14 @@ public class Usuario {
      * Constructor de la clase Usuario.
      * @param nombre nombre del usuario, no puede ser nulo ni vacío.
      */
-    public Usuario(String nombre) {
+    public Usuario(String nombre, Sistema sistema) {
         this.id = UUID.randomUUID();
         this.nombre = nombre;
         this.nivelDeUsuario = new Basico();
         this.muestrasCreadas = new ArrayList<>();
         this.opinionesHechas = new ArrayList<>();
         this.esExpertoExterno = false;
-        this.sistema = new Sistema();
+        this.sistema = sistema;
     }
 
     /**
@@ -43,14 +43,14 @@ public class Usuario {
      * @param nombre nombre del usuario, no puede ser nulo ni vacío.
      * @param esExpertoExterno indica si el usuario es un experto externo (true) o no (false).
      */
-    public Usuario(String nombre, boolean esExpertoExterno) {
+    public Usuario(String nombre, Sistema sistema, boolean esExpertoExterno) {
         this.id = UUID.randomUUID();
         this.nombre = nombre;
         this.nivelDeUsuario = esExpertoExterno ? new Experto() : new Basico();
         this.muestrasCreadas = new ArrayList<>();
         this.opinionesHechas = new ArrayList<>();
         this.esExpertoExterno = esExpertoExterno;
-        this.sistema = new Sistema();
+        this.sistema = sistema;
     }
 
     //------- Métodos de clase -------

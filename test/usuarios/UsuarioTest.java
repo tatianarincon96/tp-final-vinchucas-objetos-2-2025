@@ -13,7 +13,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -31,7 +30,7 @@ class UsuarioTest {
     void setUp() {
         sistemaMock = mock(Sistema.class);
         nivelMock = mock(NivelState.class);
-        usuario = new Usuario("Juan");
+        usuario = new Usuario("Juan", sistemaMock);
     }
 
     @Test
@@ -57,7 +56,7 @@ class UsuarioTest {
 
     @Test
     void updateNivel_cambiaANivelExperto() {
-        Usuario usuarioTest = new Usuario("Ana");
+        Usuario usuarioTest = new Usuario("Ana", sistemaMock);
         // Mock de muestra con fecha reciente
         Muestra muestraMock = mock(Muestra.class);
         when(muestraMock.getFechaDeCreacion()).thenReturn(LocalDateTime.now().minusDays(1));
@@ -81,7 +80,7 @@ class UsuarioTest {
 
     @Test
     void updateNivel_cambiarNivelAExpertoYVolverABasico() {
-        Usuario usuario = new Usuario("Ana");
+        Usuario usuario = new Usuario("Ana", sistemaMock);
         assertEquals(Basico.class, usuario.getNivel().getClass());
         // Mock de muestra con fecha reciente
         Muestra muestraMock = mock(Muestra.class);
@@ -123,7 +122,7 @@ class UsuarioTest {
 
     @Test
     void updateNivel_seMantieneBasico() {
-        Usuario usuarioTest = new Usuario("Ana");
+        Usuario usuarioTest = new Usuario("Ana", sistemaMock);
         Muestra muestraMock = mock(Muestra.class);
         when(muestraMock.getFechaDeCreacion()).thenReturn(LocalDateTime.now().minusDays(31));
         Opinion opinionMock = mock(Opinion.class);
@@ -145,19 +144,19 @@ class UsuarioTest {
 
     @Test
     void esExperto_trueSiNivelExpertoExtremo() {
-        Usuario usuarioTest = new Usuario("Ana", true);
+        Usuario usuarioTest = new Usuario("Ana", sistemaMock, true);
         assertTrue(usuarioTest.esExpertoExterno());
     }
 
     @Test
     void esExperto_falseSiNoEsExpertoExtremo() {
-        Usuario usuarioTest = new Usuario("Ana", false);
+        Usuario usuarioTest = new Usuario("Ana", sistemaMock, false);
         assertFalse(usuarioTest.esExpertoExterno());
     }
 
     @Test
     void registrarMuestra_agregaMuestraYEsExpertoExterno() throws Exception {
-        Usuario usuarioTest = new Usuario("Ana", true);
+        Usuario usuarioTest = new Usuario("Ana", sistemaMock, true);
         Ubicacion ubicacion = mock(Ubicacion.class);
         Foto foto = mock(Foto.class);
         usuarioTest.registrarMuestra(EspecieVinchuca.VINCHUCA_GUASAYANA, ubicacion, foto);
@@ -166,7 +165,7 @@ class UsuarioTest {
 
     @Test
     void opinaSobreMuestra_esExpertoExterno() throws Exception {
-        Usuario usuarioTest = new Usuario("Ana", true);
+        Usuario usuarioTest = new Usuario("Ana", sistemaMock, true);
         Muestra muestraMock = mock(Muestra.class);
         usuarioTest.opinar(muestraMock, new Opinion(usuarioTest.getNivel().getClass(), TipoDeOpinion.IMAGEN_POCO_CLARA));
         assertFalse(usuarioTest.getOpinionesHechas().isEmpty());
